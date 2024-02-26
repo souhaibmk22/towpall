@@ -26,18 +26,16 @@ class _selecte_locationState extends State<selecte_location> {
 
   Future<Position> _getCurrentLocation() async {
     servicePermission = await _location.serviceEnabled();
-    while (!servicePermission) {
-      setState(() async {
-        _yourlocation = 'turn on location';
-        print(
-            "================AAAAAAAAAAAAAAAAAAAAAAAAAAAAA=${servicePermission}");
-        servicePermission = await _location.serviceEnabled();
-        servicePermission = await _location.requestService();
+    if (!servicePermission) {
+      servicePermission = await _location.serviceEnabled();
+      _yourlocation = 'turn on location';
+      _isLoading = false;
+    }
+    if (servicePermission) {
+      setState(() {
+        _isLoading = true;
       });
     }
-    setState(() {
-      _isLoading = true;
-    });
 
     print("Service disabled");
     permission = await Geolocator.checkPermission();
