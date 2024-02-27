@@ -1,3 +1,4 @@
+import 'package:carihio/pages/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart';
@@ -179,7 +180,7 @@ class _selecte_locationState extends State<selecte_location> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => phone_sign()));
+                                        builder: (context) => SignupPage()));
                               }
                               ;
                             },
@@ -218,10 +219,6 @@ class _selecte_locationState extends State<selecte_location> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15))),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => phone_sign()));
                         // Button action
                       },
                       child: Text(
