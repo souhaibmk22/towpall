@@ -195,7 +195,15 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  _submitForm();
+                                  if (ConfirmPasswordController.value.text ==
+                                      passwordController.value.text){
+                                    _submitForm();
+                                  }else{
+                                    setState(() {
+                                      print("error");
+                                    });
+                                  }
+
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
