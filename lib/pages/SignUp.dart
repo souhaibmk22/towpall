@@ -10,6 +10,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -21,12 +22,16 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController ConfirmPasswordController = TextEditingController();
+  RegExp emailRegExp = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', //This is the This regular expression of an email
+  );
   bool _isNotValidated = false;
   String _errorMessage = '';
   late bool _isobscure = true;
   late bool _isobscure2 = true;
   late bool _isTrue = true;
   late bool _isTrue2 = true;
+  String _selectedCountry = "";
 
   @override
   Widget build(BuildContext context) {
@@ -109,18 +114,31 @@ class _SignupPageState extends State<SignupPage> {
                               height: 15,
                             ),
                             Container(
-                                height: 58,
+                                height: 76,
                                 width: MediaQuery.of(context).size.width * 0.87,
-                                child: TextFormField(
+                                child: IntlPhoneField(
+                                  keyboardType: TextInputType.phone,
                                   controller: phoneNumberController,
                                   decoration: InputDecoration(
-                                      hintText: "Phone number",
+                                      hintText: "phone",
                                       hintStyle: GoogleFonts.poppins(
                                           textStyle: TextStyle(fontSize: 17)),
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10))),
-                                  keyboardType: TextInputType.phone,
+                                  onCountryChanged: (phone) {
+                                    setState(() {
+                                      _selectedCountry = phone.fullCountryCode;
+                                    });
+                                  },
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[0-9]')),
+                                    //To remove first '0'
+                                    FilteringTextInputFormatter.deny(
+                                        RegExp(r'^0+')),
+                                    //To remove first '94' or your country code
+                                  ],
                                 )),
                             SizedBox(
                               height: 15,
@@ -168,42 +186,32 @@ class _SignupPageState extends State<SignupPage> {
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10)),
-                                      suffixIcon: IconButton(
-                                        padding:
-                                            const EdgeInsetsDirectional.only(
-                                                end: 12.0),
-                                        icon: _isobscure2
-                                            ? const Icon(Icons.visibility)
-                                            : const Icon(Icons.visibility_off),
-                                        onPressed: () {
-                                          setState(() {
-                                            _isobscure2 = !_isobscure2;
-                                            _isTrue2 = !_isTrue2;
-                                          });
-                                        },
-                                      ),
                                       hintText: 'Confirm password',
                                       hintStyle: GoogleFonts.poppins(
                                           textStyle: TextStyle(
                                         fontSize: 17,
                                       ))),
                                   keyboardType: TextInputType.visiblePassword,
-                                  obscureText: _isobscure2,
+                                  obscureText: true,
                                 )),
                             SizedBox(
                               height: 30,
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  if (ConfirmPasswordController.value.text ==
-                                      passwordController.value.text){
+                                  print("+" +
+                                      _selectedCountry +
+                                      phoneNumberController.text);
+                                  if ((ConfirmPasswordController.value.text ==
+                                          passwordController.value.text) &&
+                                      (emailRegExp
+                                          .hasMatch(emailController.text))) {
                                     _submitForm();
-                                  }else{
+                                  } else {
                                     setState(() {
                                       print("error");
                                     });
                                   }
-
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -333,7 +341,7 @@ class _SignupPageState extends State<SignupPage> {
     });
 
     String email = emailController.text;
-    String phoneNumber = phoneNumberController.text;
+    String phoneNumber = "+" + _selectedCountry + phoneNumberController.text;
     String password = passwordController.text;
 
     if (email.isNotEmpty && phoneNumber.isNotEmpty && password.isNotEmpty) {
