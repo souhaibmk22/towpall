@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:carihio/pages/home.dart';
+import 'package:carihio/pages/map_page.dart';
+import 'package:carihio/pages/select_location.dart';
+import 'package:carihio/pages/settings.dart';
+import 'package:carihio/pages/update_profile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'let me start',
-      home: homescreen(),
+      home:  UpdateProfile(),
     );
   }
 }
