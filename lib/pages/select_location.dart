@@ -6,21 +6,20 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'phon_sign_in.dart';
 import 'package:location/location.dart' as loc;
+import 'package:carihio/pages/map/maptesting.dart';
 
 class selecte_location extends StatefulWidget {
-  const selecte_location({super.key});
-
   @override
-  State<selecte_location> createState() => _selecte_locationState();
+  State<selecte_location> createState() => selecte_locationState();
 }
 
-class _selecte_locationState extends State<selecte_location> {
-  Position? _currentLocation;
+class selecte_locationState extends State<selecte_location> {
+  static Position? currentLocation;
   late bool servicePermission = false;
   late LocationPermission permission;
   String _yourlocation = "Your Location";
   String _textholder = "Set Location";
-  String _currentAdress = "";
+  static String currentAdress = "";
   bool _isLoading = false;
   bool _showButton = false;
   loc.Location _location = loc.Location();
@@ -49,11 +48,11 @@ class _selecte_locationState extends State<selecte_location> {
   _getAdressFromCoordinates() async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
-          _currentLocation!.latitude, _currentLocation!.longitude);
+          currentLocation!.latitude, currentLocation!.longitude);
       Placemark place = placemarks[0];
       print(place);
       setState(() {
-        _currentAdress = "${place.subLocality}, ${place.locality}";
+        currentAdress = "${place.subLocality}, ${place.administrativeArea}";
       });
     } catch (e) {
       print("an error is here${e}");
@@ -166,13 +165,13 @@ class _selecte_locationState extends State<selecte_location> {
                     Center(
                         child: ElevatedButton(
                             onPressed: () async {
-                              if (_currentLocation == null) {
-                                _currentLocation = await _getCurrentLocation();
+                              if (currentLocation == null) {
+                                currentLocation = await _getCurrentLocation();
                                 await _getAdressFromCoordinates();
 
                                 setState(() {
-                                  if (_currentAdress.isNotEmpty) {
-                                    _yourlocation = _currentAdress;
+                                  if (currentAdress.isNotEmpty) {
+                                    _yourlocation = currentAdress;
                                     _textholder = "Next";
                                   }
                                 });
@@ -180,7 +179,9 @@ class _selecte_locationState extends State<selecte_location> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SignupPage()));
+                                        builder: (context) => MapPage()));
+                                print(
+                                    "${currentLocation!.longitude}, ${currentLocation!.longitude}");
                               }
                               ;
                             },
