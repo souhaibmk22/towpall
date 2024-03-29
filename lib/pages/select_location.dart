@@ -1,10 +1,10 @@
-import 'package:carihio/pages/SignUp.dart';
+import 'package:carihio/pages/authentication/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'phon_sign_in.dart';
+import 'auth2/phon_sign_in.dart';
 import 'package:location/location.dart' as loc;
 import 'package:carihio/pages/map/maptesting.dart';
 

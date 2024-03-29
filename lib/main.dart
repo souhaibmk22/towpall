@@ -2,8 +2,8 @@
 
 import 'package:carihio/pages/home.dart';
 import 'package:carihio/pages/select_location.dart';
-import 'package:carihio/pages/settings.dart';
-import 'package:carihio/pages/update_profile.dart';
+import 'package:carihio/pages/profile/settings.dart';
+import 'package:carihio/pages/profile/update_profile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
