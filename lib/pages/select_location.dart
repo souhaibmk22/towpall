@@ -1,4 +1,6 @@
 import 'package:carihio/pages/authentication/SignUp.dart';
+import 'package:carihio/pages/map/maptesting.dart';
+import 'package:carihio/pages/map/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart';
@@ -6,7 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'auth2/phon_sign_in.dart';
 import 'package:location/location.dart' as loc;
-import 'package:carihio/pages/map/maptesting.dart';
+import 'package:carihio/pages/map/text.dart';
 
 class selecte_location extends StatefulWidget {
   @override
@@ -150,13 +152,16 @@ class selecte_locationState extends State<selecte_location> {
                                 size: 30,
                                 duration: Duration(milliseconds: 800),
                               )
-                            : Text(
+                            : Expanded(
+                                child: Text(
                                 '${_yourlocation}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
                                 style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w700)),
-                              ),
+                              )),
                       ],
                     ),
                     SizedBox(

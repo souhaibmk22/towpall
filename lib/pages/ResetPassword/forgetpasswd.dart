@@ -55,7 +55,7 @@ class Reset extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '  RESET YOU PASSWORD\n  HERE',
+                    '  RESET YOUR PASSWORD\n  HERE',
                     style: TextStyle(
                       color: Color.fromARGB(255, 255, 187, 51),
                       fontWeight: FontWeight.bold,
