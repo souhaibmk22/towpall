@@ -5,6 +5,7 @@ import 'package:carihio/pages/ForgetPasswordPage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
+import 'home.dart';
 import 'signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
@@ -21,22 +22,30 @@ class _SignInState extends State<SignIn> {
   String _errorMessage = '';
   late bool _isobscure = true;
   late bool _isTrue = true;
+  Color MainColor = Color.fromARGB(255,243, 159, 90);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white,
-        body: Container(
+        body:  Stack(fit: StackFit.expand, children: [
+          Positioned.fill(
+        child: Image.asset(
+            'images/background.png',
+            width: double.infinity,
             height: double.infinity,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('images/back2.png'),
-              fit: BoxFit.fill,
-            )),
-            child: Container(
+            fit: BoxFit.fill,
+          )),
+           Positioned.fill(
+      child: Container(
+        color: Color.fromARGB(122,78, 77, 77), // Replace with your desired color and opacity
+      ),
+    ),
+     Positioned.fill(
+              child: ListView(
+            children: [
+             Container(
                 margin: EdgeInsets.only(top: 80),
-                child: SingleChildScrollView(
                   child: Container(
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -45,20 +54,24 @@ class _SignInState extends State<SignIn> {
                           children: <Widget>[
                             FadeInUp(
                                 duration: Duration(milliseconds: 800),
-                                child: Container(
-                                  width: 90,
+                                child:Container(
+                                  width:  MediaQuery.of(context).size.width * 0.3186,
                                   padding: EdgeInsets.all(20),
                                   decoration: BoxDecoration(
-                                      color: Color(0xffE1D8FF),
+                                      color: Color.fromARGB(255,213, 213, 213),
                                       borderRadius: BorderRadius.circular(100),
                                       border: Border.all(
-                                          width: 2, color: Color(0xbd5036fa))),
+                                          width: 4, color:  Color.fromARGB(255,99, 99, 99))),
                                   child: Image.asset(
                                     "images/user.png",
                                     fit: BoxFit.fill,
-                                    width: 50,
+                                    width: MediaQuery.of(context).size.width * 0.1953,
                                   ),
-                                )),
+                                ),
+                                ),
+                                SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.0257,
+                        ),
                             FadeInUp(
                                 duration: Duration(milliseconds: 900),
                                 child: Text(
@@ -68,20 +81,10 @@ class _SignInState extends State<SignIn> {
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold)),
                                 )),
-                            SizedBox(height: 15),
-                            FadeInUp(
-                                duration: Duration(milliseconds: 1000),
-                                child: Text(
-                                  "Enter your email or phone and password",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500)),
-                                )),
                           ],
                         ),
                         SizedBox(
-                          height: 26,
+                          height: 42,
                         ),
                         Column(
                           children: <Widget>[
@@ -90,7 +93,12 @@ class _SignInState extends State<SignIn> {
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                      height: 58,
+                                     height: MediaQuery.of(context).size.height * 0.0633,
+                                      decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Color.fromARGB(153, 137, 137, 137),
+            ),),
                                       width: MediaQuery.of(context).size.width *
                                           0.87,
                                       child: TextFormField(
@@ -107,12 +115,16 @@ class _SignInState extends State<SignIn> {
                                             TextInputType.emailAddress,
                                       )),
                                   SizedBox(
-                                    height: 31,
+                                    height: 10,
                                   ),
                                   Container(
-                                      height: 58,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.87,
+                                      height: MediaQuery.of(context).size.height * 0.0633,
+                                      decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Color.fromARGB(153, 137, 137, 137),
+            ),),
+                            width: MediaQuery.of(context).size.width *0.87,          
                                       child: TextFormField(
                                         controller: passwordController,
                                         decoration: InputDecoration(
@@ -160,7 +172,8 @@ class _SignInState extends State<SignIn> {
                                           'Forget The Password ?',
                                           style: GoogleFonts.poppins(
                                               textStyle:
-                                                  TextStyle(fontSize: 15)),
+                                                  TextStyle(fontSize: 15),
+                                                  color : Colors.white),
                                         )),
                                   ),
                                   SizedBox(
@@ -185,7 +198,7 @@ class _SignInState extends State<SignIn> {
                                                       0.85,
                                                   57),
                                               backgroundColor:
-                                                  Color(0xbd5036fa)),
+                                                  MainColor),
                                           child: Text(
                                             "sign in",
                                             style: GoogleFonts.poppins(
@@ -228,11 +241,11 @@ class _SignInState extends State<SignIn> {
                                             style: TextStyle(
                                                 decoration:
                                                     TextDecoration.underline,
-                                                decorationColor: Colors.blue,
+                                                decorationColor: MainColor,
                                                 decorationThickness:2,
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 20,
-                                                color: Color(0xbd5036fa)),
+                                                color: MainColor),
                                           ),
                                         ),
                                       ],
@@ -244,7 +257,14 @@ class _SignInState extends State<SignIn> {
                           ],
                         ),
                       ])),
-                ))));
+                )
+                
+            ]
+                )
+     )
+        ]
+        ),
+                );
   }
 
   Widget makeInput({

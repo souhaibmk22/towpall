@@ -9,131 +9,154 @@ class ChooseRolePage extends StatefulWidget {
 }
 
 class _ChooseRolePageState extends State<ChooseRolePage> {
-  Color ClickColor = Color(0xbd5036fa);
   late Color temp;
-  Color backTowerButtonColor = Color(0xffFBFBF2);
-  Color backDriverButtonColor = Color(0xffFBFBF2);
-  Color DriverTextColor = Color(0xbd5036fa);
-  Color TowerTextColor = Color(0xbd5036fa);
-
+  Color MainColor = Color.fromARGB(255,243, 159, 90); //icon,text,border
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'images/img.png',
-            fit: BoxFit.fill,
-          ),
+                Positioned(
+      top: MediaQuery.of(context).size.height * 0.0989,
+      left: MediaQuery.of(context).size.width * 0.0605,
+      child: Container(
+    width: 45.0,
+    height: 45.0,
+    decoration: BoxDecoration(
+    color: Color.fromARGB(30, 243, 159, 90), 
+    borderRadius: BorderRadius.circular(15.0), 
+  ),
+    
+      child: Icon(
+        Icons.chevron_left,
+        color: MainColor,
+        size: 40.0,
+      ),
+    ),    
+  ),      
           Container(
               margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.148,
-                  left: MediaQuery.of(context).size.width * 0.1),
+                  top: MediaQuery.of(context).size.height * 0.1641,
+                  left: MediaQuery.of(context).size.width * 0.0605),
               child: Text(
-                'YOU ARE OFFICIALLY HERE AS A ?',
+                'You are here officialy as ?',
                 style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                         fontSize: 27,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xbd5036fa)),
+                        color: MainColor),
                     height: 1.0),
-              )),
+              )
+              ),
           Container(
               margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.26),
+                  top: MediaQuery.of(context).size.height * 0.2543, 
+                   ),
               child: Column(
                 children: [
                   Container(
-                      width: 180,
-                      height: 180,
+                     width: MediaQuery.of(context).size.width * 0.8767, 
+                     height: MediaQuery.of(context).size.height * 0.2919, 
+                     decoration: BoxDecoration(
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.25),
+        blurRadius: 4, 
+        offset: Offset(0, 4), 
+        spreadRadius: 0, 
+      ),
+    ],
+  ),
                       child: ElevatedButton(
-                          onPressed: () {
-                            if (backDriverButtonColor == Color(0xbd5036fa)) {
-                              setState(() {
-                                backDriverButtonColor = Color(0xffFBFBF2);
-                                backTowerButtonColor = Color(0xbd5036fa);
-                                TowerTextColor=Color(0xffFBFBF2);
-                                DriverTextColor=Color(0xbd5036fa);
-                              });
-                            } else {
-                              setState(() {
-                                backTowerButtonColor = Color(0xbd5036fa);
-                                TowerTextColor = Color(0xffFBFBF2);
-                              });
-                            }
-                          },
+                          onPressed: () { },
                           style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0), 
+                            ),
                             side: BorderSide(
-                                width: 2.0, color: Color(0xbd5036fa)),
-                            shadowColor: Colors.black.withOpacity(0.9),
-                            backgroundColor: backTowerButtonColor,
+                                width: 4.0, color: MainColor),
+                            shadowColor: Colors.black.withOpacity(0.25),
+                            padding: EdgeInsets.zero,
                           ),
                           child: Center(
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'images/tower.png',
-                                    fit: BoxFit.fill,
-                                    height: 138,
-                                  ),
+                                child: Stack(
+                                 alignment: Alignment.center,
+                                 children: [
+                                  ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+                                  child:Opacity(
+                           opacity: 0.7, 
+        child: Image.asset(
+          'images/client.png',
+         fit: BoxFit.fill,
+        ),
+      ), 
+                                  ),  
                                   Text(
-                                    'Tower ',
+                                    'Client ',
                                     style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
-                                            fontSize: 23,
+                                            fontSize: 40,
                                             fontWeight: FontWeight.w700,
-                                            color: TowerTextColor)),
+                                            color: MainColor)),
                                   )
                                 ],
                               )))),
                   SizedBox(
-                    height: 34,
+                    height: 20,
                   ),
-                  Container(
-                      height: 180,
-                      width: 180,
+                              Container(
+                     width: MediaQuery.of(context).size.width * 0.8767, 
+                     height: MediaQuery.of(context).size.height * 0.2919, 
+                     decoration: BoxDecoration(
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.25), 
+        blurRadius: 4, 
+        offset: Offset(0, 4), 
+        spreadRadius: 0,
+      ),
+    ],
+  ),
                       child: ElevatedButton(
-                          onPressed: () {
-                            if (backTowerButtonColor == Color(0xbd5036fa)) {
-                              setState(() {
-                                backTowerButtonColor = Color(0xffFBFBF2);
-                                backDriverButtonColor = Color(0xbd5036fa);
-                                DriverTextColor=Color(0xffFBFBF2);
-                                TowerTextColor=Color(0xbd5036fa);
-                              });
-                            } else {
-                              setState(() {
-                                backDriverButtonColor = Color(0xbd5036fa);
-                                DriverTextColor = Color(0xffFBFBF2);
-                              });
-                            }
-                          },
+                          onPressed: () {  },
                           style: ElevatedButton.styleFrom(
-                              shape: CircleBorder(),
-                              side: BorderSide(
-                                  width: 2.0, color: Color(0xbd5036fa)),
-                              backgroundColor: backDriverButtonColor,
-                              shadowColor: Color(0x9fC416D7)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0), 
+                            ),
+                            side: BorderSide(
+                                width: 4.0, color: MainColor),
+                            shadowColor: Colors.black.withOpacity(0.25),
+                            padding: EdgeInsets.zero,
+                          ),
                           child: Center(
-                              child: Column(children: [
-                                Image.asset(
-                                  'images/driver.png',
-                                  fit: BoxFit.fill,
-                                  height: 138,
+                                child: Stack(
+                                 alignment: Alignment.center,
+                                 children: [
+                                  ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+                                  child: Opacity(
+                           opacity: 0.7, 
+        child: Image.asset(
+          'images/tower.png',
+          fit: BoxFit.cover,
+        ),
+      ),   
                                 ),
-                                Text(
-                                  'Driver ',
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 23,
-                                          fontWeight: FontWeight.w700,
-                                          color: DriverTextColor)),
-                                )
-                              ]))))
-                ],
+                                  Text(
+                                    'Tower ',
+                                    style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 40,
+                                            fontWeight: FontWeight.w700,
+                                            color: MainColor)),
+                                  )
+                                ],
+                              )))),
+                ], 
               ))
         ],
       ),

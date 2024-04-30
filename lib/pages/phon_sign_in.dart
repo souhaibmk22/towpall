@@ -11,40 +11,43 @@ class phone_sign extends StatefulWidget {
 }
 
 class _phone_signState extends State<phone_sign> {
+  Color MainColor = Color.fromARGB(255,243, 159, 90); //icon,text,border
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
         body: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              'images/img.png',
-              fit: BoxFit.fill,
-            ),
             Container(
-                margin: EdgeInsets.only(top: 115, left: 35),
+                margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.1234,
+                  left: MediaQuery.of(context).size.width * 0.0605
+                ),
                 child: Text(
                   'HEY YOU!',
                   style: GoogleFonts.poppins(
                       textStyle: TextStyle(
-                    fontSize: 30,
+                    fontSize: 25,
                     fontWeight: FontWeight.w700,
                     foreground: Paint()
                       ..style = PaintingStyle.stroke
                       ..strokeWidth = 2
-                      ..color = Color(0xbd5036fa),
+                      ..color = MainColor,
                   )),
                 )),
             Container(
-              margin: EdgeInsets.only(top: 160, left: 35),
+                margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.1641,
+                  left: MediaQuery.of(context).size.width * 0.0605),              
               child: Text(
                 'WHAT’S YOUR PHONE \nNUMBER ?',
                 style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                         fontSize: 27,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xbd5036fa),
+                        color: MainColor,
                         height: 1.0)),
               ),
             ),
@@ -58,7 +61,7 @@ class _phone_signState extends State<phone_sign> {
                         top: MediaQuery.of(context).size.height * 0.3),
                     child: InternationalPhoneNumberInput(
                       onInputChanged: (value) {},
-                      cursorColor: Color(0xbd5036fa),
+                      cursorColor: MainColor,
                       hintText: '000 00 00 00',
                     )),
                 SizedBox(
@@ -76,12 +79,12 @@ class _phone_signState extends State<phone_sign> {
                             vertical: MediaQuery.of(context).size.height * 0.01,
                             horizontal:
                                 MediaQuery.of(context).size.width * 0.3),
-                        backgroundColor: Color(0xbd5036fa)),
+                        backgroundColor: MainColor),
                     child: Text(
                       'Confirm',
                       style: GoogleFonts.poppins(
                           textStyle: TextStyle(
-                              fontSize: 23,
+                              fontSize: 21,
                               fontWeight: FontWeight.w700,
                               color: Colors.white)),
                     ))

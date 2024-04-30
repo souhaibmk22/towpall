@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'savingemail.dart';
+import 'Reset.dart';
+import 'ChooseRolePage.dart';
 
-class pass extends StatefulWidget {
-  const pass({super.key});
+class Sign extends StatefulWidget {
+  const Sign({Key? key}) : super(key: key);
 
   @override
-  State<pass> createState() => _passState();
+  State<Sign> createState() => _SignState();
 }
 
-class _passState extends State<pass> {
-  var textError = " 8 characters minimum";
-  var _errorColor = Colors.black.withOpacity(0.6);
+class _SignState extends State<Sign> {
+  var textError = " I forgot my password";
+   var _errorColor;
    
   final passcontroller = TextEditingController();
   final passwordfocusednode = FocusNode();
@@ -56,7 +57,7 @@ class _passState extends State<pass> {
                   top: MediaQuery.of(context).size.height * 0.1641,
                   left: MediaQuery.of(context).size.width * 0.0605),
               child: Text(
-                'LET’S SET UP YOUR \n PASSWORD',
+                'ENTER YOUR PASSWORD',
                 style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                         fontSize: 27,
@@ -94,42 +95,49 @@ class _passState extends State<pass> {
                       hintText: 'Password',
                       hintStyle: GoogleFonts.poppins(
                           textStyle: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w600))),
+                              fontSize: 17, fontWeight: FontWeight.w700,
+                              color: Colors.black.withOpacity(0.6)))),
                 )),
             SizedBox(
               height: 5,
             ),
-            Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(left: 32),
-                child: Text(
-                  textError,
-                  style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: _errorColor,
-                      )),
-                )),
+            Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Reset()),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(left: 32),
+                      child: Text(
+                        'I forgot my password',
+                        style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: ErrorColor, 
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
             SizedBox(
               height: 145,
             ),
             Container(
               child: ElevatedButton(
                   onPressed: () {
-                    if (passcontroller.text.length < 8) {
-                      setState(() {
-                        textError =
-                        'your password must be 8 characters minimum';
-                        _errorColor = Colors.red.withOpacity(0.9);
-                      });
-                    } else {
+                    if (passcontroller.text.length >= 8) {                      
                       setState(() {
                         textError = '';
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => email_page()));
+                                builder: (context) => ChooseRolePage()));
                       });
                     }
                   },
@@ -152,6 +160,8 @@ class _passState extends State<pass> {
             )
           ])
         ],
+      ),
+        ]
       ),
     );
   }

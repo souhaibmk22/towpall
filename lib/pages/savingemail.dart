@@ -15,6 +15,7 @@ class _email_pageState extends State<email_page> {
   var emailTextAlert =
       'You will only receive your repair receipts and anything else that you agree later on.';
   Color emailTextColor = Colors.black.withOpacity(0.6);
+  Color MainColor = Color.fromARGB(255,243, 159, 90); //icon,text,border
   RegExp emailRegExp = RegExp(
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', //This is the This regular expression of an email
   );
@@ -29,26 +30,42 @@ class _email_pageState extends State<email_page> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'images/img.png',
-            fit: BoxFit.fill,
-          ),
+          Positioned(
+      top: MediaQuery.of(context).size.height * 0.0989,
+      left: MediaQuery.of(context).size.width * 0.0605,
+      child: Container(
+    width: 45.0,
+    height: 45.0,
+    decoration: BoxDecoration(
+    color: Color.fromARGB(30, 243, 159, 90), 
+    borderRadius: BorderRadius.circular(15.0), 
+  ),
+    
+      child: Icon(
+        Icons.chevron_left,
+        color: MainColor,
+        size: 40.0,
+      ),
+    ),    
+  ),      
           Container(
               margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.148,
-                  left: MediaQuery.of(context).size.width * 0.1),
+                  top: MediaQuery.of(context).size.height * 0.1641,
+                  left: MediaQuery.of(context).size.width * 0.0605),
               child: Text(
                 'WHAT’S YOUR EMAIL?',
                 style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                         fontSize: 27,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xbd5036fa)),
+                        color: MainColor),
                     height: 1.0),
-              )),
+              )
+              ),
           Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.25,
@@ -112,7 +129,7 @@ class _email_pageState extends State<email_page> {
                               borderRadius: BorderRadius.circular(10)),
                           fixedSize: Size(
                               MediaQuery.of(context).size.width * 0.83, 50),
-                          backgroundColor: Color(0xbd5036fa)),
+                          backgroundColor: MainColor ),
                       child: Text(
                         'Confirm',
                         style: GoogleFonts.poppins(

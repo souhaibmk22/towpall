@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
@@ -15,7 +16,7 @@ class _otpScreenState extends State<otpScreen> {
   var _explanationText;
 
   late Color _ColorAlert = Colors.black.withOpacity(0.6);
-
+  Color MainColor = Color.fromARGB(255,243, 159, 90); //icon,text,border
   @override
   void dispose() {
     OTPcontroller.dispose();
@@ -44,26 +45,44 @@ class _otpScreenState extends State<otpScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('images/img.png', fit: BoxFit.fill),
+          Positioned(
+      top: MediaQuery.of(context).size.height * 0.0989,
+      left: MediaQuery.of(context).size.width * 0.0605,
+      child: Container(
+    width: 45.0,
+    height: 45.0,
+    decoration: BoxDecoration(
+    color: Color.fromARGB(30, 243, 159, 90), 
+    borderRadius: BorderRadius.circular(15.0), 
+  ),
+    
+      child: Icon(
+        Icons.chevron_left,
+        color: MainColor,
+        size: 40.0,
+      ),
+    ),    
+  ),  
           Column(
             children: [
               Container(
-                  margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.151,
-                  ),
-                  child: Center(
-                    child: Text(
-                      'ENTER VERIFICATION CODE',
-                      style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xbd5036fa))),
-                    ),
-                  )),
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.1641,
+                  left: MediaQuery.of(context).size.width * 0.0605),
+              child: Text(
+                'ENTER VERIFICATION CODE',
+                style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                        fontSize: 27,
+                        fontWeight: FontWeight.w700,
+                        color: MainColor),
+                    height: 1.0),
+              )
+              ),
               SizedBox(
                 height: 95,
               ),
@@ -72,9 +91,9 @@ class _otpScreenState extends State<otpScreen> {
                   'ENTER OTP  ',
                   style: GoogleFonts.poppins(
                       textStyle: TextStyle(
-                          fontSize: 23,
+                          fontSize: 27,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xbd5036fa))),
+                          color: MainColor)),
                 ),
                 Text(
                   _explanationText,
@@ -92,13 +111,13 @@ class _otpScreenState extends State<otpScreen> {
                     length: 5,
                     defaultPinTheme: defaultPinTheme.copyWith(
                         decoration: defaultPinTheme.decoration
-                            ?.copyWith(color: Color(0xbd5036fa))),
+                            ?.copyWith(color: MainColor.withOpacity(0.6))),
                     controller: OTPcontroller, //hna win telga l OTP value
                     focusedPinTheme: defaultPinTheme.copyWith(
                         decoration: defaultPinTheme.decoration!.copyWith(
                             border:
-                                Border.all(color: Color(0xffBAA7F4), width: 3),
-                            color: Color(0xfa4f20ad))),
+                                Border.all(color: MainColor, width: 3),
+                            color: MainColor)),
                   ),
                 ),
                 SizedBox(
@@ -122,12 +141,12 @@ class _otpScreenState extends State<otpScreen> {
                         ),
                         fixedSize:
                             Size(MediaQuery.of(context).size.width * 0.8, 47),
-                        backgroundColor: Color(0xbd5036fa)),
+                        backgroundColor: MainColor),
                     child: Text(
                       'Verify',
                       style: GoogleFonts.poppins(
                           textStyle: TextStyle(
-                              fontSize: 23,
+                              fontSize: 21,
                               fontWeight: FontWeight.w700,
                               color: Colors.white)),
                     ))

@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'dart:ffi' as ff;
-import 'package:carihio/pages/SingIn.dart';
+import 'package:carihio/pages/SignIn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +32,7 @@ class _SignupPageState extends State<SignupPage> {
   late bool _isTrue = true;
   late bool _isTrue2 = true;
   String _selectedCountry = "";
+  Color MainColor = Color.fromARGB(255,243, 159, 90); //icon,text,border
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +40,17 @@ class _SignupPageState extends State<SignupPage> {
         resizeToAvoidBottomInset: true,
         body: Stack(fit: StackFit.expand, children: [
           Positioned.fill(
-              child: Image.asset(
-            'images/back2.png',
+        child: Image.asset(
+            'images/background.png',
             width: double.infinity,
             height: double.infinity,
             fit: BoxFit.fill,
           )),
+           Positioned.fill(
+      child: Container(
+        color: Color.fromARGB(122,78, 77, 77), // Replace with your desired color and opacity
+      ),
+    ),
           Positioned.fill(
               child: ListView(
             children: [
@@ -58,17 +64,25 @@ class _SignupPageState extends State<SignupPage> {
                         FadeInUp(
                             duration: Duration(milliseconds: 800),
                             child: Container(
-                              width: 90,
+                              width:  MediaQuery.of(context).size.width * 0.3186,
                               padding: EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                  color: Color(0xffE1D8FF),
+                                  color: Color.fromARGB(255,213, 213, 213),
                                   borderRadius: BorderRadius.circular(100),
                                   border: Border.all(
-                                      width: 2, color: Color(0xbd5036fa))),
+                                      width: 4, color: Color.fromARGB(255,99, 99, 99) ),
+                                      boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.25), 
+        spreadRadius: 0, 
+        blurRadius: 4, 
+        offset: Offset(0, 4), 
+      ),
+    ],),
                               child: Image.asset(
                                 "images/user.png",
                                 fit: BoxFit.fill,
-                                width: 50,
+                                width: MediaQuery.of(context).size.width * 0.1953,
                               ),
                             )),
                         FadeInUp(
@@ -77,19 +91,10 @@ class _SignupPageState extends State<SignupPage> {
                             "Sign up",
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.w700)),
+                                    fontSize: 40, fontWeight: FontWeight.w700)),
                           ),
                         ),
                         SizedBox(height: 20),
-                        FadeInUp(
-                          duration: Duration(milliseconds: 1200),
-                          child: Text(
-                            "Create an account, It's free",
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w500)),
-                          ),
-                        ),
                       ],
                     ),
                     FadeInUp(
@@ -97,7 +102,12 @@ class _SignupPageState extends State<SignupPage> {
                         child: Column(
                           children: <Widget>[
                             Container(
-                                height: 58,
+                                height: MediaQuery.of(context).size.height * 0.0633,
+                                 decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Color.fromARGB(153, 137, 137, 137),
+            ),),
                                 width: MediaQuery.of(context).size.width * 0.87,
                                 child: TextFormField(
                                   controller: emailController,
@@ -111,21 +121,77 @@ class _SignupPageState extends State<SignupPage> {
                                   keyboardType: TextInputType.emailAddress,
                                 )),
                             SizedBox(
-                              height: 15,
+                              height: 16,
                             ),
                             Container(
-                                height: 76,
-                                width: MediaQuery.of(context).size.width * 0.87,
-                                child: IntlPhoneField(
-                                  keyboardType: TextInputType.phone,
-                                  controller: phoneNumberController,
+    width: MediaQuery.of(context).size.width * 0.87,
+                            child :Row(
+  children: [
+    Container(
+                                height: MediaQuery.of(context).size.height * 0.0633,
+                                 decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Color.fromARGB(153, 137, 137, 137),
+            ),),
+                                width: MediaQuery.of(context).size.width * 0.42,
+                                child: TextFormField(
+                                  controller: emailController,
                                   decoration: InputDecoration(
-                                      hintText: "phone",
+                                      hintText: "First name",
                                       hintStyle: GoogleFonts.poppins(
                                           textStyle: TextStyle(fontSize: 17)),
                                       border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10))),
+                                  keyboardType: TextInputType.emailAddress,
+                                )),
+                                SizedBox(width: 10),
+                                Container(
+                                 height: MediaQuery.of(context).size.height * 0.0633,
+                                 decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Color.fromARGB(153, 137, 137, 137),
+            ),),
+                                width: MediaQuery.of(context).size.width * 0.42,
+                                child: TextFormField(
+                                  controller: emailController,
+                                  decoration: InputDecoration(
+                                      hintText: "Last name",
+                                      hintStyle: GoogleFonts.poppins(
+                                          textStyle: TextStyle(fontSize: 17)),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10))),
+                                  keyboardType: TextInputType.emailAddress,
+                                )),
+  ]
+                            ),
+  ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Container(
+                                height: MediaQuery.of(context).size.height * 0.0633,
+                                 decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0), 
+    border: Border.all(color: Color.fromARGB(153, 137, 137, 137) )
+            ),
+                                width: MediaQuery.of(context).size.width * 0.87,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                child: IntlPhoneField(
+                                  keyboardType: TextInputType.phone,
+                                  controller: phoneNumberController,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                      hintText: "phone",
+                                      hintStyle: GoogleFonts.poppins(
+                                          textStyle: TextStyle(fontSize: 17)),
+                                      ),
+                                     
                                   onCountryChanged: (phone) {
                                     setState(() {
                                       _selectedCountry = phone.fullCountryCode;
@@ -139,13 +205,18 @@ class _SignupPageState extends State<SignupPage> {
                                         RegExp(r'^0+')),
                                     //To remove first '94' or your country code
                                   ],
-                                )),
+                                )),),
                             SizedBox(
-                              height: 15,
+                              height: 16,
                             ),
                             Container(
-                                height: 58,
+                                 height: MediaQuery.of(context).size.height * 0.0633,
                                 width: MediaQuery.of(context).size.width * 0.87,
+                                decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0), // Set the radius here
+              border: Border.all(color: Color.fromARGB(153, 137, 137, 137))
+            ),
                                 child: TextFormField(
                                   controller: passwordController,
                                   decoration: InputDecoration(
@@ -175,10 +246,15 @@ class _SignupPageState extends State<SignupPage> {
                                   obscureText: _isobscure,
                                 )),
                             SizedBox(
-                              height: 15,
+                              height: 16,
                             ),
                             Container(
-                                height: 58,
+                                 height: MediaQuery.of(context).size.height * 0.0633,
+                                 decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Color.fromARGB(153, 137, 137, 137) )// Set the radius here
+            ),
                                 width: MediaQuery.of(context).size.width * 0.87,
                                 child: TextFormField(
                                   controller: ConfirmPasswordController,
@@ -195,7 +271,7 @@ class _SignupPageState extends State<SignupPage> {
                                   obscureText: true,
                                 )),
                             SizedBox(
-                              height: 30,
+                              height: 16,
                             ),
                             ElevatedButton(
                                 onPressed: () {
@@ -220,10 +296,10 @@ class _SignupPageState extends State<SignupPage> {
                                     fixedSize: Size(
                                         MediaQuery.of(context).size.width *
                                             0.85,
-                                        57),
-                                    backgroundColor: Color(0xbd5036fa)),
+                                        45),
+                                    backgroundColor: MainColor ),
                                 child: Text(
-                                  "Sign up",
+                                  "Next",
                                   style: GoogleFonts.poppins(
                                       textStyle: TextStyle(
                                           fontSize: 16,
@@ -258,11 +334,11 @@ class _SignupPageState extends State<SignupPage> {
                                           textStyle: TextStyle(
                                               decoration:
                                                   TextDecoration.underline,
-                                              decorationColor: Colors.blue,
+                                              decorationColor: MainColor,
                                               decorationThickness: 2,
                                               fontWeight: FontWeight.w700,
                                               fontSize: 20,
-                                              color: Color(0xbd5036fa))),
+                                              color: MainColor)),
                                     ),
                                   ),
                                 ],
