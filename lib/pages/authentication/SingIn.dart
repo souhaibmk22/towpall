@@ -1,12 +1,12 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously, prefer_const_constructors
 
 import 'dart:convert';
-import 'package:carihio/pages/ForgetPasswordPage.dart';
+import 'package:carihio/pages/ResetPassword/ForgetPasswordPage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:carihio/pages/authentication/SingIn.dart';
 import 'config.dart';
-import 'home.dart';
-import 'signup.dart';
+import 'package:carihio/pages/authentication/SignUp.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 

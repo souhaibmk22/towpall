@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'Sign.dart';
+import 'package:carihio/pages/authentication/SingIn.dart';
 
 class Reset extends StatefulWidget {
   const Reset({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class _ResetState extends State<Reset> {
       // Replace `YourNextScreen()` with the screen you want to navigate to
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Sign()),
+        MaterialPageRoute(builder: (context) => SignIn()),
       );
     },
       child: Container(
@@ -226,7 +226,7 @@ class _ResetState extends State<Reset> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Sign()));
+                                builder: (context) => SignIn()));
                       });
                     } else if (NewPasswordcontroller.text != ConfirmPasswordcontroller.text && NewPasswordcontroller.text.length >= 8 && ConfirmPasswordcontroller.text.length >= 8) {
                      setState(() {

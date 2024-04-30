@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:onboarding_page/onboarding_page.dart';
 
 class tutorial extends StatefulWidget {
   const tutorial({super.key});
