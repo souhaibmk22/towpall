@@ -70,7 +70,7 @@ class _MapPageState extends State<MapPage> {
     fetchUserCoordinates();
     DraggableSheet.controller.addListener(onChanged);
     print(
-        "--MAAAAAAMMMMMy--------------------------------------${AppConstants.markers.length}------------");
+        "----------------------------------------${AppConstants.markers.length}------------");
   }
 
   void fetchUserCoordinates() {
