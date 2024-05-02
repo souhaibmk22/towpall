@@ -1,10 +1,10 @@
 // ignore_for_file: avoid_unnecessary_containers
 
-import 'package:carihio/pages/select_location.dart';
+import 'package:carihio/pages/initialPages/select_location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'simplephonelogin.dart';
+import '../PhoneAuth_With_Firebase/simplephonelogin.dart';
 import 'package:carihio/main.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 

@@ -1,4 +1,4 @@
-import 'package:carihio/pages/select_location.dart';
+import 'package:carihio/pages/initialPages/select_location.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';

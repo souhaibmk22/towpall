@@ -2,16 +2,16 @@
 
 import 'dart:async';
 import 'package:carihio/firebase_options.dart';
-import 'package:carihio/pages/phone_auth.dart';
-import 'package:carihio/pages/select_location.dart';
+import 'package:carihio/pages/PhoneAuth_With_Firebase/phone_auth.dart';
+import 'package:carihio/pages/initialPages/select_location.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:io' if (dart.library.html) 'dart:html';
 import 'package:carihio/pages/map/maptesting.dart';
-import 'package:carihio/pages/simplephonelogin.dart';
-import 'package:carihio/pages/splashcreen.dart';
+import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
+import 'package:carihio/pages/initialPages/splashcreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
