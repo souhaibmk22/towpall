@@ -1,71 +1,29 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:carihio/pages/map/appConst.dart';
 import 'package:carihio/pages/map/markerWidget.dart';
-import 'package:flutter/foundation.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:carihio/pages/phone_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:carihio/pages/select_location.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:carihio/pages/map/appConst.dart';
-import 'package:google_places_flutter/model/prediction.dart';
-import 'containers.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:widget_to_marker/widget_to_marker.dart';
+import 'containers.dart';
 import 'draggablesheet.dart';
+import 'dart:math';
+import 'package:carihio/pages/models/driver.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({super.key});
-
-  @override
-  State<MapPage> createState() => _MapPageState();
-}
-
-class _MapPageState extends State<MapPage> {
-  late BitmapDescriptor endmarker;
-  late double _panelHeight = 440; // Initial height of the panel
-  bool _isPanelExpanded = false;
-  final double _draggableAreaHeight = 50.0;
-  final TextEditingController DestinationController = TextEditingController();
-  static CameraPosition _kLake = CameraPosition(
-      target: LatLng(
-          AppConstants.myLocation.latitude, AppConstants.myLocation.longitude),
-      zoom: 13);
-  Uint8List? marketimages;
-  List<String> images = [
-    'images/CarMarker.png',
-    'images/TM1.png',
-    'images/TM2.png',
-    'images/TM3.png',
-  ];
-  TextEditingController TextSuggestionController = TextEditingController();
-  List<LatLng> polylineCoordinates = [];
-  late Set<Marker> _markers = {};
-
-  initMarkers() async {
-    _markers = {};
-    _markers.add(Marker(
-        markerId: MarkerId("first"),
-        position: const LatLng(31.327664623766296, 34.348287509514314)));
-  }
-
-  final List<LatLng> _latLen = <LatLng>[
-    LatLng(AppConstants.myLocation.latitude, AppConstants.myLocation.longitude),
-    LatLng(AppConstants.Tm1position.target.latitude,
-        AppConstants.Tm1position.target.longitude),
-    LatLng(AppConstants.Tm2position.target.latitude,
-        AppConstants.Tm2position.target.longitude),
-    LatLng(AppConstants.Tm3position.target.latitude,
-        AppConstants.Tm3position.target.longitude)
-  ];
-
-  Future<Uint8List> getImages(String path, int width) async {
+  static Future<Uint8List> getImages(String path, int width) async {
     ByteData data = await rootBundle.load(path);
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
         targetHeight: width);
@@ -75,20 +33,84 @@ class _MapPageState extends State<MapPage> {
         .asUint8List();
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await AppConstants.controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
+  const MapPage({super.key});
+
+  @override
+  State<MapPage> createState() => _MapPageState();
+}
+
+class _MapPageState extends State<MapPage> {
+  late GoogleMapController googleMapController;
+
+  final usersRef = FirebaseDatabase.instanceFor(
+          databaseURL: AppConstants.dburl, app: Firebase.app("TowPal"))
+      .ref();
+  static late BitmapDescriptor endmarker;
+  final TextEditingController DestinationController = TextEditingController();
+  static CameraPosition _kLake = CameraPosition(
+      target: LatLng(
+          AppConstants.myLocation.latitude, AppConstants.myLocation.longitude),
+      zoom: 13);
+  Uint8List? marketimages;
+  late StreamSubscription userDb;
+  List<String> images = [
+    'images/CarMarker.png',
+    'images/TM1.png',
+    'images/TM2.png',
+    'images/TM3.png',
+  ];
+  TextEditingController TextSuggestionController = TextEditingController();
+  List<LatLng> polylineCoordinates = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // initialize loadData method
-    loadData();
-    initendmarker();
     towerinitiat();
+    fetchUserCoordinates();
     DraggableSheet.controller.addListener(onChanged);
+    print(
+        "--MAAAAAAMMMMMy--------------------------------------${AppConstants.markers.length}------------");
+  }
+
+  void fetchUserCoordinates() {
+    print(
+        '===============================${AppConstants.markers.length}===========================');
+    AppConstants.userDb = usersRef.child('users').onValue.listen((event) {
+      AppConstants.markers.clear();
+      final data = Map<String, dynamic>.from(
+          event.snapshot.value as Map<dynamic, dynamic>);
+      data.forEach((key, value) {
+        double? latitude = value['latitude'] as double?;
+        print(
+            '================LATITUDE of the firest USER===========================${latitude}');
+        double? longitude = value['longitude'] as double?;
+        String? phoneNumber = value['phone number'] as String?;
+        addMarkerToMap(latitude, longitude, phoneNumber);
+      });
+    });
+  }
+
+  void addMarkerToMap(
+      double? latitude, double? longitude, String? phoneNumber) async {
+    Uint8List carMarker = await MapPage.getImages('images/CarMarker.png', 140);
+    LatLng position = LatLng(latitude!, longitude!);
+    Marker marker = Marker(
+        markerId: MarkerId('user_marker ${AppConstants.markers.length + 1}'),
+        position: position,
+        icon: BitmapDescriptor.fromBytes(carMarker),
+        infoWindow: InfoWindow(title: phoneNumber));
+    setState(() {
+      AppConstants.markers.add(marker);
+    });
+    print(
+        '=============================${AppConstants.markers.length}============================');
+  }
+
+  Future<void> _goToTheLake() async {
+    final GoogleMapController mapController =
+        await AppConstants.controller.future;
+    await mapController.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 
   void onChanged() {
@@ -119,48 +141,42 @@ class _MapPageState extends State<MapPage> {
         logicalSize: ui.Size(80, 80), imageSize: Size(250, 250));
   }
 
-  loadData() async {
-    for (int i = 0; i < images.length; i++) {
-      Uint8List markIcons = await getImages(images[i], 200);
-      if (i > 0) {
-        markIcons = await getImages(images[i], 100);
-      }
-      // makers added according to index
-      _markers.add(Marker(
-        // given marker id
-        markerId: MarkerId(i.toString()),
-        // given marker icon
-        icon: BitmapDescriptor.fromBytes(markIcons),
-        // given position
-        position: _latLen[i],
-        infoWindow: InfoWindow(
-          // given title for marker
-          title: 'Tower ' + i.toString(),
-        ),
-      ));
-      setState(() {});
-    }
-  }
-
   towerinitiat() {
+    AddTower.towers.clear();
     for (int i = 0; i < 3; i++) {
       AddTower.add("Tower ${i + 1}", AppConstants.imagePath[i], i);
     }
   }
 
+  double calculateZoomLevel(
+      LatLngBounds bounds, double screenWidth, int distance) {
+    const double MAX_ZOOM = 21; // Maximum allowed zoom level
+
+    // Calculate the map's horizontal span in meters
+    double metersPerPixel =
+        (bounds.northeast.latitude - bounds.southwest.latitude) / screenWidth;
+    double mapWidthInMeters = distance * 2;
+
+    // Calculate the zoom level based on the map's width and maximum zoom level
+    double zoom =
+        (log(mapWidthInMeters * 360.0 / (256 * metersPerPixel)) * ln10) / ln2;
+    // Clamp the zoom level to the maximum allowed zoom
+    return zoom > MAX_ZOOM ? MAX_ZOOM : zoom;
+  }
+
   Future<void> _moveToPrediction(String prediction) async {
-    final GoogleMapController controller = await AppConstants.controller.future;
     final List<Location> location = await locationFromAddress(prediction);
-    await controller.animateCamera(CameraUpdate.newCameraPosition(
+    googleMapController = await AppConstants.controller.future;
+    await googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
             target: LatLng(location.last.latitude, location.last.longitude),
             zoom: 15)));
     setState(() async {
       _drawPolyline(location);
-      _markers.add(Marker(
+      AppConstants.markers.add(Marker(
           markerId: MarkerId("sourceMarker"),
           icon: BitmapDescriptor.fromBytes(
-              await getImages('images/destination.png', 100)),
+              await MapPage.getImages('images/destination.png', 100)),
           position: LatLng(AppConstants.myLocation.latitude,
               AppConstants.myLocation.longitude)));
       _drawPolyline(location);
@@ -176,14 +192,61 @@ class _MapPageState extends State<MapPage> {
             AppConstants.myLocation.longitude),
         PointLatLng(location.last.latitude, location.last.longitude),
         travelMode: travelMode);
-    if (resault.points.isNotEmpty) {
+    if (resault.points.isNotEmpty) {}
+    setState(() {
+      List<LatLng> locations = [
+        LatLng(AppConstants.myLocation.latitude,
+            AppConstants.myLocation.longitude),
+        LatLng(location.last.latitude, location.last.longitude)
+      ];
+      adjustZoomLevel(
+          resault.distanceValue,
+          LatLng(AppConstants.myLocation.latitude,
+              AppConstants.myLocation.longitude),
+          LatLng(location.last.latitude, location.last.longitude),
+          locations);
       polylineCoordinates.clear();
       _displayDistanceMarker(resault.distance!, location);
       resault.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
+    });
+  }
+
+  LatLngBounds calculateBoundsFromLatLngList(List<LatLng> points) {
+    double minLat = double.infinity;
+    double maxLat = -double.infinity;
+    double minLng = double.infinity;
+    double maxLng = -double.infinity;
+
+    for (LatLng point in points) {
+      minLat = min(minLat, point.latitude);
+      maxLat = max(maxLat, point.latitude);
+      minLng = min(minLng, point.longitude);
+      maxLng = max(maxLng, point.longitude);
     }
-    setState(() {});
+
+    LatLng southwest = LatLng(minLat, minLng);
+    LatLng northeast = LatLng(maxLat, maxLng);
+
+    return LatLngBounds(southwest: southwest, northeast: northeast);
+  }
+
+  Future<void> adjustZoomLevel(int? distance, LatLng source, LatLng distination,
+      List<LatLng> locations) async {
+    if (distance! > 0) {
+      LatLng midpoint = LatLng((source.latitude + distination.latitude) / 2,
+          (source.longitude + distination.longitude) / 2);
+      LatLngBounds bounds = calculateBoundsFromLatLngList(locations);
+      double screenWidth = MediaQuery.of(context).size.width;
+      print("========================$distance==============================");
+      double zoomLevel = calculateZoomLevel(bounds, screenWidth, distance);
+      print(
+          ":::::::::::::::::::::::::::::::::::::::::::::::::::::$zoomLevel=====================================");
+
+      await googleMapController
+          .animateCamera(CameraUpdate.newLatLngBounds(bounds, 90));
+    }
   }
 
   Future<void> _displayDistanceMarker(
@@ -192,7 +255,7 @@ class _MapPageState extends State<MapPage> {
         logicalSize: Size(MediaQuery.of(context).size.width * 0.24,
             MediaQuery.of(context).size.height * 0.24),
         imageSize: Size(250, 250));
-    _markers.add(Marker(
+    AppConstants.markers.add(Marker(
       markerId: MarkerId("destinationMarker"),
       icon: endmarker,
       position: LatLng(location.last.latitude, location.last.longitude),
@@ -215,7 +278,7 @@ class _MapPageState extends State<MapPage> {
         onMapCreated: (GoogleMapController controller) {
           AppConstants.controller.complete(controller);
         },
-        markers: _markers,
+        markers: AppConstants.markers,
         polylines: {
           Polyline(
               polylineId: PolylineId("destination"),
@@ -228,71 +291,176 @@ class _MapPageState extends State<MapPage> {
       Positioned(
           top: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          left: MediaQuery.of(context).size.width * 0.05,
-          height: 55,
-          child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  boxShadow: [
+          left: MediaQuery.of(context).size.width * 0.02,
+          child: Row(children: [
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            icon: Icon(
+                              Icons.account_circle,
+                              size: 43,
+                              color: Color(0Xc302394A),
+                              shadows: [
+                                BoxShadow(
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.3),
+                                    spreadRadius: 5)
+                              ],
+                            ),
+                            title: Text(
+                              "Log out",
+                              style: GoogleFonts.poppins(
+                                  textStyle:
+                                      TextStyle(fontWeight: FontWeight.w500)),
+                            ),
+                            content: Container(
+                                height: 120,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Do you want to log out ?",
+                                      style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600)),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                backgroundColor:
+                                                    Color(0xffF39F5A)),
+                                            onPressed: () async {
+                                              await AuthServic.logout();
+                                              Navigator.pushReplacementNamed(
+                                                  context, "phonesignein");
+                                              selecte_locationState
+                                                  .currentLocation = null;
+                                            },
+                                            child: Text(
+                                              "Yes",
+                                              style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                            )),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                backgroundColor:
+                                                    Color(0xffF39F5A)),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              "No",
+                                              style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                            ))
+                                      ],
+                                    )
+                                  ],
+                                )),
+                          ));
+                },
+                icon: Icon(
+                  Icons.account_circle,
+                  color: Color(0Xc302394A),
+                  size: 47,
+                  shadows: [
                     BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 5,
-                        blurRadius: 10)
-                  ]),
-              child: GooglePlaceAutoCompleteTextField(
-                textEditingController: TextSuggestionController,
-                googleAPIKey: AppConstants.apiKey,
-                textStyle: GoogleFonts.poppins(
-                  textStyle:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                ),
-                inputDecoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
-                  hintText: 'add destination',
-                  hintStyle: GoogleFonts.poppins(
-                      textStyle:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                ),
-                isLatLngRequired: false,
-                debounceTime: 300,
-                countries: ["dz"],
-                itemClick: (Prediction prediction) async {
-                  TextSuggestionController.text = prediction.description!;
-                  TextSuggestionController.selection =
-                      TextSelection.fromPosition(
-                          TextPosition(offset: prediction.description!.length));
-                  _moveToPrediction(prediction.description!);
-
-                  //await controller.animateCamera(CameraUpdate.newCameraPosition(
-                  //CameraPosition(
-                  //target: LatLng(prediction.lat as double,
-                  //prediction.lng as double))));
-                },
-                itemBuilder: (context, index, Prediction prediction) {
-                  return Container(
+                        blurRadius: 10,
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 5)
+                  ],
+                )),
+            Expanded(
+                child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Icon(Icons.location_on),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Expanded(
-                            child: Text(
-                          "${prediction.description ?? ""}",
-                          style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.w500)),
-                        ))
-                      ],
-                    ),
-                  );
-                },
-              ))),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 5,
+                              blurRadius: 10)
+                        ]),
+                    child: GooglePlaceAutoCompleteTextField(
+                      textEditingController: TextSuggestionController,
+                      googleAPIKey: AppConstants.apiKey,
+                      textStyle: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      inputDecoration: InputDecoration(
+                          border:
+                              OutlineInputBorder(borderSide: BorderSide.none),
+                          hintText: 'add destination',
+                          hintStyle: TextStyle(
+                              fontSize: 14, fontWeight: ui.FontWeight.w700)),
+                      isLatLngRequired: false,
+                      debounceTime: 300,
+                      countries: ["dz"],
+                      itemClick: (Prediction prediction) async {
+                        TextSuggestionController.text = prediction.description!;
+                        TextSuggestionController.selection =
+                            TextSelection.fromPosition(TextPosition(
+                                offset: prediction.description!.length));
+                        setState(() {
+                          _moveToPrediction(prediction.description!);
+                        });
+
+                        //await controller.animateCamera(CameraUpdate.newCameraPosition(
+                        //CameraPosition(
+                        //target: LatLng(prediction.lat as double,
+                        //prediction.lng as double))));
+                      },
+                      itemBuilder: (context, index, Prediction prediction) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Icon(Icons.location_on),
+                              SizedBox(
+                                width: 7,
+                              ),
+                              Expanded(
+                                  child: Text(
+                                "${prediction.description ?? ""}",
+                                style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500)),
+                              ))
+                            ],
+                          ),
+                        );
+                      },
+                    )))
+          ])),
       Positioned(
           right: MediaQuery.of(context).size.width * 0.001,
           top: MediaQuery.of(context).size.height * 0.5,
@@ -385,5 +553,10 @@ class _MapPageState extends State<MapPage> {
             ),
           ))
     ]));
+  }
+
+  void deactivate() {
+    userDb.cancel();
+    super.deactivate();
   }
 }

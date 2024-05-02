@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "536717158148",
+    "project_id": "towpal-417323",
+    "storage_bucket": "towpal-417323.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536717158148:android:8f722a80919ddb6fd65251",
+        "android_client_info": {
+          "package_name": "com.example.carihio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqY_8zSpLF_q0g_VOwGHV2ONAM3-3hzBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

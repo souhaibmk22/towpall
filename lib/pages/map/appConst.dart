@@ -5,7 +5,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AppConstants {
-  static final mapid=dotenv.env['mapid'];
+  static late StreamSubscription userDb;
+  static Set<Marker> markers = {};
+  static final dburl = dotenv.env["dbURL"];
+  static final mapid = dotenv.env['mapid'];
   static final String apiKey = dotenv.env['key']!;
   static final Completer<GoogleMapController> controller =
       Completer<GoogleMapController>();

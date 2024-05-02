@@ -1,14 +1,18 @@
 import 'package:carihio/pages/authentication/SignUp.dart';
 import 'package:carihio/pages/map/maptesting.dart';
 import 'package:carihio/pages/map/text.dart';
+import 'package:carihio/pages/phone_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'auth2/phon_sign_in.dart';
 import 'package:location/location.dart' as loc;
 import 'package:carihio/pages/map/text.dart';
+import 'package:carihio/pages/map/Node_Generator.dart';
+import 'package:carihio/pages/simplephonelogin.dart';
 
 class selecte_location extends StatefulWidget {
   @override
@@ -178,13 +182,20 @@ class selecte_locationState extends State<selecte_location> {
                                   if (currentAdress.isNotEmpty) {
                                     _yourlocation = currentAdress;
                                     _textholder = "Next";
+                                    //generation of new user node in the database
+                                    print("APPENDING NEW NODE TO THE DATABASE");
+                                    NodeGenerator.init(
+                                        AuthServic.firebaseAuth.currentUser
+                                            ?.phoneNumber,
+                                        LatLng(currentLocation!.latitude,
+                                            currentLocation!.longitude));
+                                    NodeGenerator.generate();
                                   }
+                                  ;
                                 });
                               } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MapPage()));
+                                Navigator.pushReplacementNamed(
+                                    context, "MapPage");
                                 print(
                                     "${currentLocation!.longitude}, ${currentLocation!.longitude}");
                               }
