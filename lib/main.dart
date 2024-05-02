@@ -8,7 +8,7 @@ import 'package:carihio/pages/ResetPassword/Reset.dart';
 import 'package:carihio/pages/auth2/savingemail.dart';
 import 'package:carihio/pages/authentication/Signup.dart';
 import 'package:carihio/pages/authentication/SingIn.dart';
-import 'package:carihio/pages/ResetPassword/Via.dart';
+import 'package:carihio/pages/ResetPassword/via.dart';
 import 'package:carihio/pages/welcom.dart';
 import 'package:carihio/pages/auth2/fullname.dart';
 import 'package:carihio/pages/auth2/passwd.dart';
@@ -18,10 +18,10 @@ import 'package:carihio/pages/auth2/otp_verification_screen.dart';
 import 'package:carihio/pages/profile/settings.dart';
 import 'package:carihio/pages/profile/update_profile.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
-  //await dotenv.load();
+  await dotenv.load();
   runApp(const MyApp());
 }
 
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'let me start',
-      home: welcom(),
+      home: via(),
     );
   }
 }
