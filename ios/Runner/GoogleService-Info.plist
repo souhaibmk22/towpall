@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBtZzVzMdQRbCpMm9cPg7qqy4kS8vCp7l8</string>
+	<string>AIzaSyDE1WOzWhVrHVoeSAFZmihV7B4n7NAF5Nk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>536717158148</string>
+	<string>11681464566</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.carihio</string>
 	<key>PROJECT_ID</key>
-	<string>towpal-417323</string>
+	<string>towpal-9eb27</string>
 	<key>STORAGE_BUCKET</key>
-	<string>towpal-417323.appspot.com</string>
+	<string>towpal-9eb27.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:536717158148:ios:5b0c3b4d8dbe4251d65251</string>
+	<string>1:11681464566:ios:2a035bee544c8cb1f2ecd7</string>
+	<key>DATABASE_URL</key>
+	<string>https://towpal-9eb27-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>

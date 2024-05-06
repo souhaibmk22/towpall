@@ -55,13 +55,13 @@ dependencies:
   flutter_polyline_points: ^2.0.0
   flutter_svg: ^2.0.10+1
   widget_to_marker: ^1.0.4
-  firebase_core: ^2.30.1
-  firebase_database: ^10.5.3
-  firebase_auth: ^4.19.4
   flutter_otp_text_field: ^1.1.3+2
   provider: ^6.1.2
   flutter_launcher_icons: ^0.13.1
   animated_splash_screen: ^1.3.0
+  firebase_core: ^2.30.1
+  firebase_database: ^10.5.4
+  firebase_auth: ^4.19.4
 
 dev_dependencies:
   flutter_test:
@@ -137,4 +137,5 @@ flutter:
     - images/TM3.png
     - images/destination.png
     - images/splashscreen.png
+    - images/backproblem.png
     - .env

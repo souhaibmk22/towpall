@@ -79,10 +79,6 @@ class selecte_locationState extends State<selecte_location> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'images/img.png',
-            fit: BoxFit.fill,
-          ),
           Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.148,
@@ -96,7 +92,7 @@ class selecte_locationState extends State<selecte_location> {
                       foreground: Paint()
                         ..style = PaintingStyle.stroke
                         ..strokeWidth = 2
-                        ..color = Color(0xbd5036fa),
+                        ..color = Color(0xffF39F5A),
                     ),
                     height: 1.1),
               )),
@@ -110,7 +106,7 @@ class selecte_locationState extends State<selecte_location> {
                   textStyle: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xbd5036fa))),
+                      color: Color(0xffF39F5A))),
             ),
           ),
           Positioned(
@@ -152,7 +148,7 @@ class selecte_locationState extends State<selecte_location> {
                         ),
                         _isLoading
                             ? SpinKitThreeBounce(
-                                color: Color(0xbd5036fa), //0xbd5036fa
+                                color: Color(0xffF39F5A), //0xbd5036fa
                                 size: 30,
                                 duration: Duration(milliseconds: 800),
                               )
@@ -207,7 +203,7 @@ class selecte_locationState extends State<selecte_location> {
                                 fixedSize: Size(
                                     MediaQuery.of(context).size.width * 0.85,
                                     57),
-                                backgroundColor: Color(0xbd5036fa)),
+                                backgroundColor: Color(0xffF39F5A)),
                             child: Text(
                               _textholder,
                               style: GoogleFonts.poppins(

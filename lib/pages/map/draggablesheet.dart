@@ -4,26 +4,30 @@ class DraggableSheet extends StatefulWidget {
   final Widget child;
 
   static final controller = DraggableScrollableController();
-  static final sheeto = GlobalKey();
 
   DraggableSheet({super.key, required this.child});
 
   @override
-  State<DraggableSheet> createState() => _DraggableSheetState();
+  State<DraggableSheet> createState() => DraggableSheetState();
 }
 
-class _DraggableSheetState extends State<DraggableSheet> {
+class DraggableSheetState extends State<DraggableSheet> {
+  static GlobalKey getsheetKey() {
+    return GlobalKey();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (builder, constraints) {
+      final sheetKey = GlobalKey();
       return DraggableScrollableSheet(
-          key: DraggableSheet.sheeto,
+          key: sheetKey,
           initialChildSize: 0.42,
           maxChildSize: 0.42,
           minChildSize: 0.23,
           expand: true,
           snap: true,
-          snapSizes: [175 / constraints.maxHeight, 0.42],
+          snapSizes: [0.23, 0.42],
           builder: (BuildContext context, ScrollController scrollScontroller) {
             return DecoratedBox(
               decoration: BoxDecoration(

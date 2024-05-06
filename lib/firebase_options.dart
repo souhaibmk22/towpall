@@ -41,48 +41,54 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyByPymlM_jtUJ1aZmR_xXOVNtgVQAmDLt0',
-    appId: '1:536717158148:web:b95c98026b97c480d65251',
-    messagingSenderId: '536717158148',
-    projectId: 'towpal-417323',
-    authDomain: 'towpal-417323.firebaseapp.com',
-    storageBucket: 'towpal-417323.appspot.com',
-    measurementId: 'G-8L4ZJCQYCX',
+    apiKey: 'AIzaSyAHmlmPfI23K9LQ2_EtG3s3e4KgCd-32Dg',
+    appId: '1:11681464566:web:f2dc0a12697e9da7f2ecd7',
+    messagingSenderId: '11681464566',
+    projectId: 'towpal-9eb27',
+    authDomain: 'towpal-9eb27.firebaseapp.com',
+    databaseURL: 'https://towpal-9eb27-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'towpal-9eb27.appspot.com',
+    measurementId: 'G-DN92K7R1TV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAqY_8zSpLF_q0g_VOwGHV2ONAM3-3hzBI',
-    appId: '1:536717158148:android:8f722a80919ddb6fd65251',
-    messagingSenderId: '536717158148',
-    projectId: 'towpal-417323',
-    storageBucket: 'towpal-417323.appspot.com',
+    apiKey: 'AIzaSyCQplWO-bGid7t6BzZo-wJnfKyPgebZVRk',
+    appId: '1:11681464566:android:e8c98f9197b11f47f2ecd7',
+    messagingSenderId: '11681464566',
+    projectId: 'towpal-9eb27',
+    databaseURL: 'https://towpal-9eb27-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'towpal-9eb27.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBtZzVzMdQRbCpMm9cPg7qqy4kS8vCp7l8',
-    appId: '1:536717158148:ios:5b0c3b4d8dbe4251d65251',
-    messagingSenderId: '536717158148',
-    projectId: 'towpal-417323',
-    storageBucket: 'towpal-417323.appspot.com',
+    apiKey: 'AIzaSyDE1WOzWhVrHVoeSAFZmihV7B4n7NAF5Nk',
+    appId: '1:11681464566:ios:2a035bee544c8cb1f2ecd7',
+    messagingSenderId: '11681464566',
+    projectId: 'towpal-9eb27',
+    databaseURL: 'https://towpal-9eb27-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'towpal-9eb27.appspot.com',
     iosBundleId: 'com.example.carihio',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBtZzVzMdQRbCpMm9cPg7qqy4kS8vCp7l8',
-    appId: '1:536717158148:ios:5b0c3b4d8dbe4251d65251',
-    messagingSenderId: '536717158148',
-    projectId: 'towpal-417323',
-    storageBucket: 'towpal-417323.appspot.com',
+    apiKey: 'AIzaSyDE1WOzWhVrHVoeSAFZmihV7B4n7NAF5Nk',
+    appId: '1:11681464566:ios:2a035bee544c8cb1f2ecd7',
+    messagingSenderId: '11681464566',
+    projectId: 'towpal-9eb27',
+    databaseURL: 'https://towpal-9eb27-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'towpal-9eb27.appspot.com',
     iosBundleId: 'com.example.carihio',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyByPymlM_jtUJ1aZmR_xXOVNtgVQAmDLt0',
-    appId: '1:536717158148:web:9feb76ce3f52c5d7d65251',
-    messagingSenderId: '536717158148',
-    projectId: 'towpal-417323',
-    authDomain: 'towpal-417323.firebaseapp.com',
-    storageBucket: 'towpal-417323.appspot.com',
-    measurementId: 'G-Q8LCJEXPXJ',
+    apiKey: 'AIzaSyAHmlmPfI23K9LQ2_EtG3s3e4KgCd-32Dg',
+    appId: '1:11681464566:web:f2dc0a12697e9da7f2ecd7',
+    messagingSenderId: '11681464566',
+    projectId: 'towpal-9eb27',
+    authDomain: 'towpal-9eb27.firebaseapp.com',
+    databaseURL: 'https://towpal-9eb27-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'towpal-9eb27.appspot.com',
+    measurementId: 'G-DN92K7R1TV',
   );
+
 }

@@ -1,7 +1,5 @@
 import 'dart:io' if (dart.library.html) 'dart:html';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'simplephonelogin.dart';
 
 class AuthServic {
@@ -14,13 +12,15 @@ class AuthServic {
       required Function nextStep}) async {
     await firebaseAuth
         .verifyPhoneNumber(
-            timeout: Duration(seconds: 30),
+            timeout: Duration(seconds: 60),
             phoneNumber: PhoneSignIn.phone,
-            verificationCompleted: (phoneAuthCredential) async {
-              return;
+            verificationCompleted: (PhoneAuthCredential credential) async {
+              await firebaseAuth.signInWithCredential(credential);
             },
-            verificationFailed: (error) async {
-              return;
+            verificationFailed: (FirebaseAuthException e) async {
+              if (e.code == 'invalid-phone-number') {
+                print('The provided phone number is not valid.');
+              }
             },
             codeSent: (verificationId, forceResendingToken) async {
               verifyid = verificationId;
@@ -53,8 +53,9 @@ class AuthServic {
   }
 
   static Future logout() async {
-    if (firebaseAuth.currentUser != null) {
-      firebaseAuth.signOut();
+    final currentUser = firebaseAuth.currentUser;
+    if (currentUser != null) {
+      currentUser.delete();
     }
   }
 

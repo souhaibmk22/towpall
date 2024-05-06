@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class NodeGenerator {
   static String? phonenumber = "";
@@ -16,10 +15,10 @@ class NodeGenerator {
 
   static Future<void> generate() async {
     final dburl = dotenv.env["dbURL"];
-    final database = FirebaseDatabase.instanceFor(
-            databaseURL: dburl, app: Firebase.app("TowPal"))
-        .ref()
-        .child("users");
+    final database =
+        FirebaseDatabase.instanceFor(databaseURL: dburl, app: Firebase.app())
+            .ref()
+            .child("users");
     final user = <String, dynamic>{
       'phone number': phonenumber,
       'latitude': location.latitude,

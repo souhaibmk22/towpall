@@ -20,7 +20,6 @@ import 'package:widget_to_marker/widget_to_marker.dart';
 import 'containers.dart';
 import 'draggablesheet.dart';
 import 'dart:math';
-import 'package:carihio/pages/models/driver.dart';
 
 class MapPage extends StatefulWidget {
   static Future<Uint8List> getImages(String path, int width) async {
@@ -43,7 +42,7 @@ class _MapPageState extends State<MapPage> {
   late GoogleMapController googleMapController;
 
   final usersRef = FirebaseDatabase.instanceFor(
-          databaseURL: AppConstants.dburl, app: Firebase.app("TowPal"))
+          databaseURL: AppConstants.dburl, app: Firebase.app())
       .ref();
   static late BitmapDescriptor endmarker;
   final TextEditingController DestinationController = TextEditingController();
@@ -134,7 +133,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   DraggableScrollableSheet get getSheet =>
-      (DraggableSheet.sheeto.currentWidget as DraggableScrollableSheet);
+      (DraggableSheetState.getsheetKey().currentWidget
+          as DraggableScrollableSheet);
 
   initendmarker() async {
     endmarker = await MarkerWidget(output: "resault").toBitmapDescriptor(

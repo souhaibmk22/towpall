@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
-import 'package:carihio/firebase_options.dart';
 import 'package:carihio/pages/PhoneAuth_With_Firebase/phone_auth.dart';
 import 'package:carihio/pages/initialPages/select_location.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,10 +12,11 @@ import 'package:carihio/pages/map/maptesting.dart';
 import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
 import 'package:carihio/pages/initialPages/splashcreen.dart';
 
-Future<void> main() async {
+import 'firebase_options.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform, name: 'TowPal');
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load();
   runApp(const MyApp());
 }

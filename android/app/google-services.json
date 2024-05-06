@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "536717158148",
-    "project_id": "towpal-417323",
-    "storage_bucket": "towpal-417323.appspot.com"
+    "project_number": "11681464566",
+    "firebase_url": "https://towpal-9eb27-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "towpal-9eb27",
+    "storage_bucket": "towpal-9eb27.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:536717158148:android:8f722a80919ddb6fd65251",
+        "mobilesdk_app_id": "1:11681464566:android:e8c98f9197b11f47f2ecd7",
         "android_client_info": {
           "package_name": "com.example.carihio"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAqY_8zSpLF_q0g_VOwGHV2ONAM3-3hzBI"
+          "current_key": "AIzaSyCQplWO-bGid7t6BzZo-wJnfKyPgebZVRk"
         }
       ],
       "services": {
