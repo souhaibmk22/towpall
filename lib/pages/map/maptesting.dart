@@ -40,18 +40,13 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   late GoogleMapController googleMapController;
-
   final usersRef = FirebaseDatabase.instanceFor(
           databaseURL: AppConstants.dburl, app: Firebase.app())
       .ref();
   static late BitmapDescriptor endmarker;
   final TextEditingController DestinationController = TextEditingController();
-  static CameraPosition _kLake = CameraPosition(
-      target: LatLng(
-          AppConstants.myLocation.latitude, AppConstants.myLocation.longitude),
-      zoom: 13);
   Uint8List? marketimages;
-  late StreamSubscription userDb;
+
   List<String> images = [
     'images/CarMarker.png',
     'images/TM1.png',
@@ -65,11 +60,16 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    initgoogleMapController();
     towerinitiat();
     fetchUserCoordinates();
     DraggableSheet.controller.addListener(onChanged);
     print(
-        "----------------------------------------${AppConstants.markers.length}------------");
+        "----------------------------------------AMIIIIIIIIIIIIIIIIIIIIIIIIIIIIIINE------------");
+  }
+
+  Future<void> initgoogleMapController() async {
+    googleMapController = await AppConstants.controller.future;
   }
 
   void fetchUserCoordinates() {
@@ -82,7 +82,7 @@ class _MapPageState extends State<MapPage> {
       data.forEach((key, value) {
         double? latitude = value['latitude'] as double?;
         print(
-            '================LATITUDE of the firest USER===========================${latitude}');
+            '================LATITUDE of the first USER===========================${latitude}');
         double? longitude = value['longitude'] as double?;
         String? phoneNumber = value['phone number'] as String?;
         addMarkerToMap(latitude, longitude, phoneNumber);
@@ -106,10 +106,22 @@ class _MapPageState extends State<MapPage> {
         '=============================${AppConstants.markers.length}============================');
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController mapController =
-        await AppConstants.controller.future;
-    await mapController.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  Future<void> goToTheLake() async {
+    try {
+      final CameraPosition kLake = CameraPosition(
+        target: LatLng(AppConstants.myLocation.latitude,
+            AppConstants.myLocation.longitude),
+        zoom: 13,
+      );
+
+      final GoogleMapController mapController =
+          await AppConstants.controller.future;
+      await mapController.animateCamera(CameraUpdate.newCameraPosition(kLake));
+      mapController.dispose();
+    } catch (e) {
+      print('Error while animating camera: $e');
+      // Handle the exception (e.g., show an error message to the user)
+    }
   }
 
   void onChanged() {
@@ -166,11 +178,13 @@ class _MapPageState extends State<MapPage> {
 
   Future<void> _moveToPrediction(String prediction) async {
     final List<Location> location = await locationFromAddress(prediction);
-    googleMapController = await AppConstants.controller.future;
+    GoogleMapController googleMapController =
+        await AppConstants.controller.future;
     await googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
             target: LatLng(location.last.latitude, location.last.longitude),
             zoom: 15)));
+    googleMapController.dispose();
     setState(() async {
       _drawPolyline(location);
       AppConstants.markers.add(Marker(
@@ -234,6 +248,8 @@ class _MapPageState extends State<MapPage> {
 
   Future<void> adjustZoomLevel(int? distance, LatLng source, LatLng distination,
       List<LatLng> locations) async {
+    GoogleMapController googleMapController =
+        await AppConstants.controller.future;
     if (distance! > 0) {
       LatLng midpoint = LatLng((source.latitude + distination.latitude) / 2,
           (source.longitude + distination.longitude) / 2);
@@ -246,6 +262,7 @@ class _MapPageState extends State<MapPage> {
 
       await googleMapController
           .animateCamera(CameraUpdate.newLatLngBounds(bounds, 90));
+      googleMapController.dispose();
     }
   }
 
@@ -429,11 +446,6 @@ class _MapPageState extends State<MapPage> {
                         setState(() {
                           _moveToPrediction(prediction.description!);
                         });
-
-                        //await controller.animateCamera(CameraUpdate.newCameraPosition(
-                        //CameraPosition(
-                        //target: LatLng(prediction.lat as double,
-                        //prediction.lng as double))));
                       },
                       itemBuilder: (context, index, Prediction prediction) {
                         return Container(
@@ -465,7 +477,11 @@ class _MapPageState extends State<MapPage> {
           right: MediaQuery.of(context).size.width * 0.001,
           top: MediaQuery.of(context).size.height * 0.5,
           child: ElevatedButton(
-            onPressed: _goToTheLake,
+            onPressed: () async {
+              await goToTheLake();
+              print(
+                  "==================why it dosn't goes to lake=================");
+            },
             style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xffffa153),
                 shape: CircleBorder(),
@@ -555,8 +571,13 @@ class _MapPageState extends State<MapPage> {
     ]));
   }
 
+  void dispose() {
+    AppConstants.controller = Completer();
+    AppConstants.markers.clear();
+    super.dispose();
+  }
+
   void deactivate() {
-    userDb.cancel();
     super.deactivate();
   }
 }

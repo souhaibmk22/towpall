@@ -10,8 +10,9 @@ class AppConstants {
   static final dburl = dotenv.env["dbURL"];
   static final mapid = dotenv.env['mapid'];
   static final String apiKey = dotenv.env['key']!;
-  static final Completer<GoogleMapController> controller =
+  static Completer<GoogleMapController> controller =
       Completer<GoogleMapController>();
+
   static final myLocation = LatLng(
       selecte_locationState.currentLocation!.latitude,
       selecte_locationState.currentLocation!.longitude);

@@ -12,7 +12,7 @@ class AuthServic {
       required Function nextStep}) async {
     await firebaseAuth
         .verifyPhoneNumber(
-            timeout: Duration(seconds: 60),
+            timeout: Duration(seconds: 40),
             phoneNumber: PhoneSignIn.phone,
             verificationCompleted: (PhoneAuthCredential credential) async {
               await firebaseAuth.signInWithCredential(credential);

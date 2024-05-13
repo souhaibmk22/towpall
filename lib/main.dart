@@ -11,7 +11,7 @@ import 'dart:io' if (dart.library.html) 'dart:html';
 import 'package:carihio/pages/map/maptesting.dart';
 import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
 import 'package:carihio/pages/initialPages/splashcreen.dart';
-
+import 'package:carihio/pages/PhoneAuth_With_Firebase/Otppage.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
       title: 'TowPal',
       home: splash(),
       routes: {
+        "otp": (context) => otp(),
         "phonesignein": (context) => PhoneSignIn(),
         "MapPage": (context) => MapPage(),
         "selecteposition": (context) => selecte_location(),
