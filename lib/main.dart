@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'let me start',
-      home: via(),
+      home: Reset(),
     );
   }
 }
