@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../ChooseRolePage.dart';
+import '../initialPages/ChooseRolePage.dart';
 
 class fullname extends StatefulWidget {
   const fullname({super.key});

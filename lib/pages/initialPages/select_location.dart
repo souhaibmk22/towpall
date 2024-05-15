@@ -1,14 +1,18 @@
 import 'package:carihio/pages/authentication/SignUp.dart';
 import 'package:carihio/pages/map/maptesting.dart';
 import 'package:carihio/pages/map/text.dart';
+import 'package:carihio/pages/PhoneAuth_With_Firebase/phone_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'auth2/phon_sign_in.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../auth2/phon_sign_in.dart';
 import 'package:location/location.dart' as loc;
 import 'package:carihio/pages/map/text.dart';
+import 'package:carihio/pages/map/Node_Generator.dart';
+import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
 
 class selecte_location extends StatefulWidget {
   @override
@@ -75,10 +79,6 @@ class selecte_locationState extends State<selecte_location> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'images/img.png',
-            fit: BoxFit.fill,
-          ),
           Container(
               margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.148,
@@ -92,7 +92,7 @@ class selecte_locationState extends State<selecte_location> {
                       foreground: Paint()
                         ..style = PaintingStyle.stroke
                         ..strokeWidth = 2
-                        ..color = Color(0xbd5036fa),
+                        ..color = Color(0xffF39F5A),
                     ),
                     height: 1.1),
               )),
@@ -106,7 +106,7 @@ class selecte_locationState extends State<selecte_location> {
                   textStyle: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xbd5036fa))),
+                      color: Color(0xffF39F5A))),
             ),
           ),
           Positioned(
@@ -148,7 +148,7 @@ class selecte_locationState extends State<selecte_location> {
                         ),
                         _isLoading
                             ? SpinKitThreeBounce(
-                                color: Color(0xbd5036fa), //0xbd5036fa
+                                color: Color(0xffF39F5A), //0xbd5036fa
                                 size: 30,
                                 duration: Duration(milliseconds: 800),
                               )
@@ -178,13 +178,20 @@ class selecte_locationState extends State<selecte_location> {
                                   if (currentAdress.isNotEmpty) {
                                     _yourlocation = currentAdress;
                                     _textholder = "Next";
+                                    //generation of new user node in the database
+                                    print("APPENDING NEW NODE TO THE DATABASE");
+                                    NodeGenerator.init(
+                                        AuthServic.firebaseAuth.currentUser
+                                            ?.phoneNumber,
+                                        LatLng(currentLocation!.latitude,
+                                            currentLocation!.longitude));
+                                    NodeGenerator.generate();
                                   }
+                                  ;
                                 });
                               } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MapPage()));
+                                Navigator.pushReplacementNamed(
+                                    context, "MapPage");
                                 print(
                                     "${currentLocation!.longitude}, ${currentLocation!.longitude}");
                               }
@@ -196,7 +203,7 @@ class selecte_locationState extends State<selecte_location> {
                                 fixedSize: Size(
                                     MediaQuery.of(context).size.width * 0.85,
                                     57),
-                                backgroundColor: Color(0xbd5036fa)),
+                                backgroundColor: Color(0xffF39F5A)),
                             child: Text(
                               _textholder,
                               style: GoogleFonts.poppins(

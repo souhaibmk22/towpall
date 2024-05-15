@@ -69,8 +69,7 @@ class _phone_signState extends State<phone_sign> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => otpScreen()));
+                      Navigator.pushReplacementNamed(context, "otp");
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(

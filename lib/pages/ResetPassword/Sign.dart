@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carihio/pages/ResetPassword/Reset.dart';
-import '../ChooseRolePage.dart';
+import '../initialPages/ChooseRolePage.dart';
 
 class Sign extends StatefulWidget {
   const Sign({Key? key}) : super(key: key);
