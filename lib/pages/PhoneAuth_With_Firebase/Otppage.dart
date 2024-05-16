@@ -64,10 +64,8 @@ class _otpState extends State<otp> {
                         print(
                             "====================hereisfine==================");
                         Navigator.pop(context);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => selecte_location()));
+                        Navigator.pushReplacementNamed(
+                            context, "selecteposition");
                         print("===============hereisfinetwooo=============");
                       } else {
                         Navigator.pop(context);
