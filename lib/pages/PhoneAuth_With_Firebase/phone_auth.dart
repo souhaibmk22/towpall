@@ -47,16 +47,13 @@ class AuthServic {
     } on FirebaseAuthException catch (e) {
       return e.message.toString();
     } catch (e) {
-      print("nichaaaaaaaaaaaaaaaaaaaaaaaaaaaan");
+      print("nichaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan");
       return e.toString();
     }
   }
 
-  static Future logout() async {
-    final currentUser = firebaseAuth.currentUser;
-    if (currentUser != null) {
-      currentUser.delete();
-    }
+  static Future<void> logout() async {
+    await firebaseAuth.signOut();
   }
 
   static Future<bool> isLoggedIn() async {

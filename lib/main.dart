@@ -58,11 +58,11 @@ class _CheckUserLoggedInOrNotState extends State<CheckUserLoggedInOrNot> {
 
   Future<void> checking() async {
     bool isLoggedin = await AuthServic.isLoggedIn();
+    print("${isLoggedin}");
     if (isLoggedin) {
       await AuthServic.isLoggedIn();
       Navigator.pushReplacementNamed(context, "selecteposition");
     } else {
-      print(isLoggedin);
       Navigator.pushReplacementNamed(context, "phonesignein");
     }
   }
