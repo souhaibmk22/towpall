@@ -13,7 +13,7 @@ class AppConstants {
   static Completer<GoogleMapController> controller =
       Completer<GoogleMapController>();
 
-  static final myLocation = LatLng(
+  static LatLng myLocation = LatLng(
       selecte_locationState.currentLocation!.latitude,
       selecte_locationState.currentLocation!.longitude);
   static CameraPosition driverposition =

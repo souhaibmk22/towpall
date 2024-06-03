@@ -3,7 +3,7 @@ import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
-
+import 'package:carihio/selectUserType.dart';
 import '../initialPages/select_location.dart';
 
 class otp extends StatefulWidget {
@@ -67,7 +67,7 @@ class _otpState extends State<otp> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => selecte_location()));
+                                builder: (context) => UserTypeSelectionPage()));
                         print("===============hereisfinetwooo=============");
                       } else {
                         Navigator.pop(context);

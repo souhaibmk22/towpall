@@ -13,6 +13,8 @@ import 'package:location/location.dart' as loc;
 import 'package:carihio/pages/map/text.dart';
 import 'package:carihio/pages/map/Node_Generator.dart';
 import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
+import 'package:carihio/selectUserType.dart';
+import 'package:carihio/pages/map/TowerGenerator.dart';
 
 class selecte_location extends StatefulWidget {
   @override
@@ -180,12 +182,23 @@ class selecte_locationState extends State<selecte_location> {
                                     _textholder = "Next";
                                     //generation of new user node in the database
                                     print("APPENDING NEW NODE TO THE DATABASE");
-                                    NodeGenerator.init(
-                                        AuthServic.firebaseAuth.currentUser
-                                            ?.phoneNumber,
-                                        LatLng(currentLocation!.latitude,
-                                            currentLocation!.longitude));
-                                    NodeGenerator.generate();
+                                    if (UserTypeSelectionPage.selectedType ==
+                                        "driver") {
+                                      NodeGenerator.init(
+                                          AuthServic.firebaseAuth.currentUser
+                                              ?.phoneNumber,
+                                          LatLng(currentLocation!.latitude,
+                                              currentLocation!.longitude));
+                                      NodeGenerator.generate();
+                                    } else {
+                                      TowerGenerator tower = TowerGenerator(
+                                          AuthServic.firebaseAuth.currentUser
+                                              ?.phoneNumber,
+                                          LatLng(currentLocation!.latitude,
+                                              currentLocation!.longitude),
+                                          true);
+                                      tower.generate();
+                                    }
                                   }
                                   ;
                                 });

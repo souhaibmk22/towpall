@@ -12,6 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:carihio/pages/initialPages/select_location.dart';
+import 'package:geolocator_platform_interface/src/models/position.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
@@ -20,6 +21,8 @@ import 'package:widget_to_marker/widget_to_marker.dart';
 import 'containers.dart';
 import 'draggablesheet.dart';
 import 'dart:math';
+import 'package:carihio/selectUserType.dart';
+import 'DIsplayNearestTowers.dart';
 
 class MapPage extends StatefulWidget {
   static Future<Uint8List> getImages(String path, int width) async {
@@ -39,6 +42,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  TowerData tower = TowerData();
   late GoogleMapController googleMapController;
   final usersRef = FirebaseDatabase.instanceFor(
           databaseURL: AppConstants.dburl, app: Firebase.app())
@@ -72,27 +76,26 @@ class _MapPageState extends State<MapPage> {
     googleMapController = await AppConstants.controller.future;
   }
 
-  void fetchUserCoordinates() {
+  Future<void> fetchUserCoordinates() async {
     print(
         '===============================${AppConstants.markers.length}===========================');
-    AppConstants.userDb = usersRef.child('users').onValue.listen((event) {
-      AppConstants.markers.clear();
-      final data = Map<String, dynamic>.from(
-          event.snapshot.value as Map<dynamic, dynamic>);
-      data.forEach((key, value) {
-        double? latitude = value['latitude'] as double?;
-        print(
-            '================LATITUDE of the first USER===========================${latitude}');
-        double? longitude = value['longitude'] as double?;
-        String? phoneNumber = value['phone number'] as String?;
-        addMarkerToMap(latitude, longitude, phoneNumber);
+
+    /// we must verify if the user is a simple driver or a tower if he is a driver i will display to him all the towers location on the map :
+    if (UserTypeSelectionPage.selectedType == "driver") {
+      /// displaying the nearest towers on to the driver
+      Position position = await tower.latLngToPosition(AppConstants.myLocation);
+      List<Map<String, dynamic>> nearestTowers =
+          await tower.getNearestTowers(position, 10000);
+      nearestTowers.forEach((tower) {
+        addMarkerToMap(
+            tower["latitude"], tower["longitude"], tower["phone number"]);
       });
-    });
+    }
   }
 
-  void addMarkerToMap(
+  Future<void> addMarkerToMap(
       double? latitude, double? longitude, String? phoneNumber) async {
-    Uint8List carMarker = await MapPage.getImages('images/CarMarker.png', 140);
+    Uint8List carMarker = await MapPage.getImages('images/TM1.png', 100);
     LatLng position = LatLng(latitude!, longitude!);
     Marker marker = Marker(
         markerId: MarkerId('user_marker ${AppConstants.markers.length + 1}'),
