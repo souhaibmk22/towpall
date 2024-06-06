@@ -15,6 +15,8 @@ import 'package:carihio/pages/map/Node_Generator.dart';
 import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
 import 'package:carihio/selectUserType.dart';
 import 'package:carihio/pages/map/TowerGenerator.dart';
+import 'package:carihio/pages/map/appConst.dart';
+import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
 
 class selecte_location extends StatefulWidget {
   @override
@@ -185,18 +187,22 @@ class selecte_locationState extends State<selecte_location> {
                                     if (UserTypeSelectionPage.selectedType ==
                                         "driver") {
                                       NodeGenerator.init(
-                                          AuthServic.firebaseAuth.currentUser
-                                              ?.phoneNumber,
-                                          LatLng(currentLocation!.latitude,
-                                              currentLocation!.longitude));
-                                      NodeGenerator.generate();
-                                    } else {
-                                      TowerGenerator tower = TowerGenerator(
+                                          PhoneSignIn.nameController.text,
                                           AuthServic.firebaseAuth.currentUser
                                               ?.phoneNumber,
                                           LatLng(currentLocation!.latitude,
                                               currentLocation!.longitude),
-                                          true);
+                                          AppConstants.token);
+                                      NodeGenerator.generate();
+                                    } else {
+                                      TowerGenerator tower = TowerGenerator(
+                                          PhoneSignIn.nameController.text,
+                                          AuthServic.firebaseAuth.currentUser
+                                              ?.phoneNumber,
+                                          LatLng(currentLocation!.latitude,
+                                              currentLocation!.longitude),
+                                          true,
+                                          AppConstants.token);
                                       tower.generate();
                                     }
                                   }

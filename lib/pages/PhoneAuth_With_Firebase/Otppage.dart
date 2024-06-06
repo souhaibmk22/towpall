@@ -63,11 +63,14 @@ class _otpState extends State<otp> {
                       if (value == "Success") {
                         print(
                             "====================hereisfine==================");
+<<<<<<< HEAD
                         Navigator.pop(context);
 <<<<<<< HEAD
                         Navigator.pushReplacementNamed(
                             context, "selecteposition");
 =======
+=======
+>>>>>>> beng
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -75,10 +78,9 @@ class _otpState extends State<otp> {
 >>>>>>> beng
                         print("===============hereisfinetwooo=============");
                       } else {
-                        Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
-                            "invalidOTPnumber",
+                            "invalid OTP number",
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     fontSize: 15,

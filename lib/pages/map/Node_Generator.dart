@@ -5,13 +5,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NodeGenerator {
+  static String named = "";
   static String? phonenumber = "";
 
   static LatLng location = LatLng(0, 0);
+  static String? token = "";
 
-  static void init(String? phone, LatLng locate) {
+  static void init(String name, String? phone, LatLng locate, String? tok) {
+    named = name;
     phonenumber = phone;
     location = locate;
+    token = tok;
   }
 
   static Future<void> generate() async {
@@ -36,9 +40,11 @@ class NodeGenerator {
               .child("drivers");
 
       final driverData = <String, dynamic>{
+        'name': named,
         'phone number': phonenumber,
         'latitude': location.latitude,
         'longitude': location.longitude,
+        'token': token
       };
 
       ///  Check if the phone number exists in the database

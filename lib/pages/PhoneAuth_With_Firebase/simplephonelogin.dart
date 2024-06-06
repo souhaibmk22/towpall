@@ -13,6 +13,7 @@ class PhoneSignIn extends StatefulWidget {
   const PhoneSignIn({super.key});
 
   static TextEditingController phoneController = TextEditingController();
+  static TextEditingController nameController = TextEditingController();
   static String phone = "";
 
   @override
@@ -21,7 +22,7 @@ class PhoneSignIn extends StatefulWidget {
 
 class _PhoneSignInState extends State<PhoneSignIn> {
   late PhoneNumber phonenumber;
-  final _formKey = GlobalKey();
+  final _formKey = GlobalKey<FormState>(); // Create a global key for the form
 
   @override
   Widget build(BuildContext context) {
@@ -36,78 +37,134 @@ class _PhoneSignInState extends State<PhoneSignIn> {
               child: Text(
                 "TowPal",
                 style: GoogleFonts.racingSansOne(
-                    textStyle:
-                        TextStyle(fontSize: 40, color: Color(0xffF39F5A))),
+                  textStyle: TextStyle(fontSize: 40, color: Color(0xffF39F5A)),
+                ),
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
             Text(
-              "Enter your correct phone number to get started",
+              "Enter your name and phone number to get started",
+              textAlign: TextAlign.center,
               style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14)),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.1,
-            ),
-            Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.06),
-                child: IntlPhoneField(
-                  invalidNumberMessage: 'invalid mobile number',
-                  controller: PhoneSignIn.phoneController,
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+            Form(
+              key: _formKey, // Assign the global key to the form
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.06,
+                    ),
+                    child: TextFormField(
+                      controller: PhoneSignIn.nameController,
+                      decoration: InputDecoration(
+                        labelText: 'Enter your name',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 15,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
                     ),
                   ),
-                  initialCountryCode: 'DZ',
-                  onChanged: (phone) {
-                    phonenumber = PhoneNumber.fromCompleteNumber(
-                        completeNumber: phone.completeNumber);
-                  },
-                )),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.04,
+                  SizedBox(height: 15),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.06,
+                    ),
+                    child: IntlPhoneField(
+                      invalidNumberMessage: 'Invalid mobile number',
+                      controller: PhoneSignIn.phoneController,
+                      decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+                      initialCountryCode: 'DZ',
+                      onChanged: (phone) {
+                        phonenumber = PhoneNumber.fromCompleteNumber(
+                          completeNumber: phone.completeNumber,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    fixedSize:
-                        Size(MediaQuery.of(context).size.width * 0.90, 55),
-                    backgroundColor: Color(0xffF39F5A),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
-                onPressed: () {
+              style: ElevatedButton.styleFrom(
+                fixedSize: Size(MediaQuery.of(context).size.width * 0.90, 55),
+                backgroundColor: Color(0xffF39F5A),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  // Validate the form
                   PhoneSignIn.phone =
                       '+${phonenumber.countryCode}${PhoneSignIn.phoneController.value.text}';
 
                   print(PhoneSignIn.phone);
                   AuthServic.sentOTP(
-                      phone: PhoneSignIn.phone,
-                      errorStep: () =>
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                            "Error in Sending OTP",
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.red)),
-                          ))),
-                      nextStep: () => Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => otp())));
-                },
-                child: Text(
-                  "submit",
-                  style: GoogleFonts.poppins(
-                      textStyle: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black)),
-                ))
+                    phone: PhoneSignIn.phone,
+                    errorStep: () =>
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                        "Invalid phone number",
+                        style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      backgroundColor: Colors.red,
+                    )),
+                    nextStep: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => otp()),
+                    ),
+                  );
+                }
+              },
+              child: Text(
+                "Submit",
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
           ]),
-        )
+        ),
       ]),
     );
   }

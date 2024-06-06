@@ -20,6 +20,7 @@ class AuthServic {
             verificationFailed: (FirebaseAuthException e) async {
               if (e.code == 'invalid-phone-number') {
                 print('The provided phone number is not valid.');
+                errorStep();
               }
             },
             codeSent: (verificationId, forceResendingToken) async {
@@ -47,7 +48,7 @@ class AuthServic {
     } on FirebaseAuthException catch (e) {
       return e.message.toString();
     } catch (e) {
-      print("nichaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan");
+      print("Error:$e");
       return e.toString();
     }
   }
