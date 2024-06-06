@@ -1,34 +1,47 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'appConst.dart';
 import 'maptesting.dart';
 
 class AddTower {
   static List<Tower> towers = [];
+  static List<CameraPosition> locations = [];
 
-  static void add(String name, String imagePath, int? id) {
+  static void add(String? name, String imagePath, int? id, double latitude,
+      double longitude, String phoneNumber) {
     towers.add(Tower(
       name: name,
       truckImage: imagePath,
       id: id,
+      latitude: latitude,
+      longitude: longitude,
+      phoneNumber: phoneNumber,
     ));
   }
 }
 
 class Tower extends StatefulWidget {
   int? id;
-  String name;
+  String? name;
   String truckImage;
   static int index = 0;
+  double latitude;
+  double longitude;
+  String phoneNumber;
 
-  Tower({required this.name, required this.truckImage, required this.id}) {
+  Tower({
+    required this.name,
+    required this.truckImage,
+    required this.id,
+    required this.latitude,
+    required this.longitude,
+    required this.phoneNumber,
+  }) {
     id = index;
     index++;
-
-    ///NOT CORRECT
   }
 
   @override
@@ -43,6 +56,15 @@ class _TowerState extends State<Tower> {
     final GoogleMapController controller = await AppConstants.controller.future;
     await controller
         .animateCamera(CameraUpdate.newCameraPosition(towerPosition));
+    print(widget.name);
+  }
+
+  void _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 
   @override
@@ -50,8 +72,10 @@ class _TowerState extends State<Tower> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _goToTposition(AppConstants.locations[widget.id!]);
+          _goToTposition(CameraPosition(
+              target: LatLng(widget.latitude, widget.longitude), zoom: 13));
           print(widget.id!);
+          _makePhoneCall(widget.phoneNumber);
         });
       },
       child: Container(
@@ -67,15 +91,26 @@ class _TowerState extends State<Tower> {
         child: Column(
           children: [
             Text(
-              '${widget.name} id:${widget.id}',
+              '${widget.name} ',
               style: GoogleFonts.poppins(
                   textStyle:
                       TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
             ),
             Image.asset(
               widget.truckImage,
-              width: 108,
+              width: 120,
               height: 70,
+            ),
+            SizedBox(
+              height: 13,
+            ),
+            Text(
+              "Call now !!!!",
+              style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red)),
             )
           ],
         ),

@@ -12,7 +12,7 @@ class AppConstants {
   static final String apiKey = dotenv.env['key']!;
   static Completer<GoogleMapController> controller =
       Completer<GoogleMapController>();
-
+  static String? token = "";
   static LatLng myLocation = LatLng(
       selecte_locationState.currentLocation!.latitude,
       selecte_locationState.currentLocation!.longitude);

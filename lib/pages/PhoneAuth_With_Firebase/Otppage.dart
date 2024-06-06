@@ -63,17 +63,15 @@ class _otpState extends State<otp> {
                       if (value == "Success") {
                         print(
                             "====================hereisfine==================");
-                        Navigator.pop(context);
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => UserTypeSelectionPage()));
                         print("===============hereisfinetwooo=============");
                       } else {
-                        Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
-                            "invalidOTPnumber",
+                            "invalid OTP number",
                             style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     fontSize: 15,

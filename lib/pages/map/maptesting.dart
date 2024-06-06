@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'package:carihio/pages/PhoneAuth_With_Firebase/simplephonelogin.dart';
 import 'package:carihio/pages/map/appConst.dart';
 import 'package:carihio/pages/map/markerWidget.dart';
 import 'package:carihio/pages/PhoneAuth_With_Firebase/phone_auth.dart';
@@ -42,6 +43,8 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  List<Map<String, dynamic>> nearestTowers = [];
+  int counter = 0;
   TowerData tower = TowerData();
   late GoogleMapController googleMapController;
   final usersRef = FirebaseDatabase.instanceFor(
@@ -64,8 +67,10 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if (AppConstants.controller.isCompleted) {
+      AppConstants.controller = Completer();
+    }
     initgoogleMapController();
-    towerinitiat();
     fetchUserCoordinates();
     DraggableSheet.controller.addListener(onChanged);
     print(
@@ -83,25 +88,30 @@ class _MapPageState extends State<MapPage> {
     /// we must verify if the user is a simple driver or a tower if he is a driver i will display to him all the towers location on the map :
     if (UserTypeSelectionPage.selectedType == "driver") {
       /// displaying the nearest towers on to the driver
+      addMarkerToMap(AppConstants.myLocation.latitude,
+          AppConstants.myLocation.longitude, PhoneSignIn.phone);
       Position position = await tower.latLngToPosition(AppConstants.myLocation);
-      List<Map<String, dynamic>> nearestTowers =
-          await tower.getNearestTowers(position, 10000);
-      nearestTowers.forEach((tower) {
-        addMarkerToMap(
-            tower["latitude"], tower["longitude"], tower["phone number"]);
-      });
+      nearestTowers = await tower.getNearestTowers(position, 10000);
+      counter = nearestTowers.length;
+      AppConstants.markers.clear();
+      if (nearestTowers.isNotEmpty) {
+        nearestTowers.forEach((tower) {
+          addMarkerToMap(tower["latitude"], tower["longitude"], tower["name"]);
+        });
+        towerinitiat();
+      }
     }
   }
 
   Future<void> addMarkerToMap(
-      double? latitude, double? longitude, String? phoneNumber) async {
+      double? latitude, double? longitude, String? name) async {
     Uint8List carMarker = await MapPage.getImages('images/TM1.png', 100);
     LatLng position = LatLng(latitude!, longitude!);
     Marker marker = Marker(
         markerId: MarkerId('user_marker ${AppConstants.markers.length + 1}'),
         position: position,
         icon: BitmapDescriptor.fromBytes(carMarker),
-        infoWindow: InfoWindow(title: phoneNumber));
+        infoWindow: InfoWindow(title: name));
     setState(() {
       AppConstants.markers.add(marker);
     });
@@ -151,16 +161,20 @@ class _MapPageState extends State<MapPage> {
       (DraggableSheetState.getsheetKey().currentWidget
           as DraggableScrollableSheet);
 
-  initendmarker() async {
+  void initendmarker() async {
     endmarker = await MarkerWidget(output: "resault").toBitmapDescriptor(
         logicalSize: ui.Size(80, 80), imageSize: Size(250, 250));
   }
 
-  towerinitiat() {
+  void towerinitiat() {
     AddTower.towers.clear();
-    for (int i = 0; i < 3; i++) {
-      AddTower.add("Tower ${i + 1}", AppConstants.imagePath[i], i);
-    }
+    nearestTowers.forEach((tower) {
+      print(tower);
+      print(tower["name"]);
+      AddTower.add(tower["name"], "images/TM1.png", 1, tower["latitude"],
+          tower["longitude"], tower["phone number"]);
+      print(tower["name"]);
+    });
   }
 
   double calculateZoomLevel(
@@ -296,7 +310,11 @@ class _MapPageState extends State<MapPage> {
         mapType: MapType.normal,
         cloudMapId: AppConstants.mapid,
         onMapCreated: (GoogleMapController controller) {
-          AppConstants.controller.complete(controller);
+          if (!AppConstants.controller.isCompleted) {
+            AppConstants.controller.complete(controller);
+          } else {
+            googleMapController = controller;
+          }
         },
         markers: AppConstants.markers,
         polylines: {
@@ -522,7 +540,7 @@ class _MapPageState extends State<MapPage> {
                   height: 10,
                 ),
                 Container(
-                    height: 110,
+                    height: 150,
                     child: ListView.separated(
                         separatorBuilder: (BuildContextcontext, intindex) {
                           return SizedBox(width: 10);
@@ -536,38 +554,7 @@ class _MapPageState extends State<MapPage> {
                         })),
                 SizedBox(
                   height: 50,
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xffffa153),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              minimumSize: Size(270, 45)),
-                          child: Text(
-                            "Request Now",
-                            style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 21,
-                                    fontWeight: ui.FontWeight.w700)),
-                          )),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromRGBO(
-                                  252, 219, 197, 0.9764705882352941),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          onPressed: () {},
-                          child: Icon(
-                            Icons.calendar_month_sharp,
-                            color: Color.fromRGBO(243, 159, 90, 1),
-                            size: 30,
-                          ))
-                    ]),
+                )
               ]),
             ),
           ))
@@ -575,7 +562,10 @@ class _MapPageState extends State<MapPage> {
   }
 
   void dispose() {
-    AppConstants.controller = Completer();
+    if (AppConstants.controller.isCompleted) {
+      googleMapController.dispose();
+      AppConstants.controller = Completer();
+    }
     AppConstants.markers.clear();
     super.dispose();
   }

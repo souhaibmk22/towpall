@@ -6,11 +6,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 
 class TowerGenerator {
+  String? name;
   String? phoneNumber;
   LatLng location;
   bool available;
+  String? token;
 
-  TowerGenerator(this.phoneNumber, this.location, this.available);
+  TowerGenerator(
+      this.name, this.phoneNumber, this.location, this.available, this.token);
 
   void switchAvailability() {
     this.available = !this.available;
@@ -42,11 +45,12 @@ class TowerGenerator {
             .child("towers");
 
     final towerData = <String, dynamic>{
-      'name': null,
+      'name': this.name,
       'phone number': this.phoneNumber,
       'latitude': this.location.latitude,
       'longitude': this.location.longitude,
-      'available': this.available
+      'available': this.available,
+      'token': this.token
     };
 
     try {

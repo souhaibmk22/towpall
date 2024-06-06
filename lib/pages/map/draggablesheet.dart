@@ -22,12 +22,12 @@ class DraggableSheetState extends State<DraggableSheet> {
       final sheetKey = GlobalKey();
       return DraggableScrollableSheet(
           key: sheetKey,
-          initialChildSize: 0.42,
-          maxChildSize: 0.42,
+          initialChildSize: 0.3,
+          maxChildSize: 0.3,
           minChildSize: 0.23,
           expand: true,
           snap: true,
-          snapSizes: [0.23, 0.42],
+          snapSizes: [0.23, 0.3],
           builder: (BuildContext context, ScrollController scrollScontroller) {
             return DecoratedBox(
               decoration: BoxDecoration(
